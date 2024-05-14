@@ -1,0 +1,55 @@
+ <aside class="main-sidebar" xmlns:th="http://www.thymeleaf.org">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image" th:align="center">
+          <img src="assets/dist/img/avatar.png" class="img-circle" alt="User Connected"/>
+        </div>
+        <div class="pull-left info">
+		    <p>ORGANISATEUR</p> 
+          <!-- <p th:text="${compte.agents.profil}">ORGANISATEUR</p> -->
+          <!-- <a href="#" ><i class="fa fa-circle text-success"></i> <span th:text="${compte.login}"></span></a> -->
+        </div>
+      </div>
+      <!-- search form
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search..."/>
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+          </span>
+        </div>
+      </form>
+      -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="treeview">
+          <a href="#">
+              <i class="fa fa-dashboard"></i>
+              <span>Acceuil</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/organisateur/delegations">
+            <i class="fa fa-money"></i>
+            <span>Délégations</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/organisateur/all-participants">
+            <i class="fa fa-user"></i>
+            <span>Participant</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/organisateur/epreuves">
+            <i class="fa fa-clipboard"></i>
+            <span>Epreuves</span>
+          </a>
+        </li>
+
+      </ul>
+    </section>
+  </aside>

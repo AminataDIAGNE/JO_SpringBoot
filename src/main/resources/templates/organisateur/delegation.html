@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{template}">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Délégation</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<!-- Main content -->
+			<section class="content">
+			  <div class="row">
+				<div class="col-xs-12">
+				  <div class="box col-xs-6"><br/>
+				  	<div class="row">
+						<div class="col-xs-12">
+							<div class="box box-default">
+								<div class="box-header with-border">
+									<h3 class="box-title">Liste des délégations</h3>
+								</div>
+							  	<div class="box-body">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+								   		<i class="fa fa-fw fa-plus"></i> Créer une délégation
+								  	</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			   		<!--Modal Formulaire d'ajout -->
+					  <div class="form">
+						  <form th:action="@{/organisateur/delegations/new}" method="post" name="formSave">
+							  <div class="modal fade" id="modal-default">
+								  <div class="modal-dialog">
+									  <div class="modal-content">
+										  <div class="modal-header">
+											  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												  <span aria-hidden="true">&times;</span></button>
+											  <h4 class="modal-title">Formulaire d'ajout délégation</h4>
+										  </div>
+										  <div class="modal-body">
+											  <div class="col-md-12">
+												  <div class="row">
+													  <div class="form-group">
+														  <label>Nom Délégation *</label>
+														  <input type="text" name="nom" required = "required" id="nom" class="form-control" placeholder="nom"/>
+													  </div>
+												  </div>
+                                                  <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Nombre Medailles Or</label>
+                                                        <input type="text" name="nombreMedaillesOr" id="or" class="form-control" placeholder="Nombre de médailles d'Or"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Nombre Medailles Argent</label>
+                                                        <input type="text" name="nombreMedaillesArgent" id="argent" class="form-control" placeholder="Nombre de médailles d'Argent"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Nombre Medailles Bronzes</label>
+                                                        <input type="text" name="nombreMedaillesBronze" id="bronze" class="form-control" placeholder="Nombre de médailles d'Argent"/>
+                                                    </div>
+                                                </div>
+											  </div>
+										  </div>
+										  <div class="modal-footer">
+											  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">fermer</button>
+											  <input type="submit" class="btn btn-facebook" value="enregistrer" id="btnSave"/>
+										  </div>
+									  </div>
+								  </div>
+							  </div>
+						  </form>
+					  </div>
+					 <!--Modal Formulaire de Suppression -->
+					<div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Confirmation Suppression</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						  </div>
+						  <div class="modal-body">
+							  <h3><p class="alert alert-default" style="color: red;">Voulez-vous vraiment supprimer cette délégation ?</p></h3>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Non</button>
+							<a href="" class="btn btn-success" id="delete">Oui</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+				<!-- Formulaire de modification -->
+				<div class="formEdit">
+					 <form th:action="@{/organisateur/delegations/edit}" method="post" name="formSave">
+						<div class="modal modal-default fade" id="modal-primary">
+						  <div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Formulaire de modification Utilisateur</h4>
+							  </div>
+							  <div class="modal-body">
+								 <div class="box-body">
+									 <div class="row">
+										 <div class="col-md-12">
+											 <div class="row">
+												 <div class="form-group">
+													 <label>Identifiant</label>
+													 <input type="text" readonly name="id" id="idDelegation" class="form-control" placeholder="Id délégation"/>
+												 </div>
+												 <div class="form-group">
+                                                    <label>Nom Délégation *</label>
+                                                    <input type="text" name="nom" required = "required" id="nom" class="form-control" placeholder="nom"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Nombre Medailles Or</label>
+                                                    <input type="text" name="nombreMedaillesOr" id="or" class="form-control" placeholder="Nombre de médailles d'Or"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Nombre Medailles Argent</label>
+                                                    <input type="text" name="nombreMedaillesArgent" id="argent" class="form-control" placeholder="Nombre de médailles d'Argent"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Nombre Medailles Bronzes</label>
+                                                    <input type="text" name="nombreMedaillesBronze" id="bronze" class="form-control" placeholder="Nombre de médailles d'Argent"/>
+                                                </div>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+								<input type="submit" class="btn btn-primary" value="Enregistrer" id="btnSave"/>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					 </form>
+				</div>
+				<div class="box-body">
+					<table id="example2" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Modifier</th>
+								<th>Délégation</th>
+								<th>Nombre Medailles Or</th>
+								<th>Nombre Medailles Argent</th>
+                                <th>Nombre Medailles Bronze</th>
+								<th>Details</th>
+								<th>Supprimer</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="d:${delegations}">
+								<td>
+									<a th:href="@{/organisateur/delegations/findOne(id=${d.id})}" class="editDelegation"><i class="fa fa-fw fa-edit"></i></a>
+								</td>
+						  		<td th:text="${d.nom}"></td>
+                                <td th:text="${d.nombreMedaillesOr}"></td>
+                                <td th:text="${d.nombreMedaillesArgent}"></td>
+                                <td th:text="${d.nombreMedaillesBronze}"></td>
+								<td>
+									<a th:href="@{/organisateur/delegations/details(id=${d.id})}"><i class="fa fa-fw fa-eye"></i></a>
+								</td>
+						  		<td>
+							  		<a th:href="@{/organisateur/delegations/delete(id=${d.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+						  		</td>
+                                
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Modifier</th>
+								<th>Délégation</th>
+								<th>Nombre Medailles Or</th>
+								<th>Nombre Medailles Argent</th>
+                                <th>Nombre Medailles Bronze</th>
+								<th>Details</th>
+								<th>Supprimer</th>
+							</tr>
+						</tfoot>
+					  </table>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</section>
+		</div>
+	</body>
+</html>

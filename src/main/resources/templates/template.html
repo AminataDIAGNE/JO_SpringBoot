@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="utf-8"/>
+  <base href="/"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../static/assets/plugins/fontawesome-free/css/all.min.css"
+          th:href="@{/assets/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <link rel="stylesheet" href="../static/assets/bower_components/bootstrap/dist/css/bootstrap.min.css"
+  	th:href="@{/assets/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../static/assets/bower_components/font-awesome/css/font-awesome.min.css"
+  th:href="@{/assets/bower_components/font-awesome/css/font-awesome.min.css}"/>
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../static/assets/bower_components/Ionicons/css/ionicons.min.css"
+  th:href="@{/assets/bower_components/Ionicons/css/ionicons.min.css}"/>
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="../static/assets/bower_components/jvectormap/jquery-jvectormap.css"
+  th:href="@{/assets/bower_components/jvectormap/jquery-jvectormap.css}"/>
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../static/assets/dist/css/AdminLTE.min.css"
+  th:href="@{/assets/dist/css/AdminLTE.min.css}"/>
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../static/assets/dist/css/skins/_all-skins.min.css" th:href="@{/assets/dist/css/skins/_all-skins.min.css}"/>
+  
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../static/assets/bower_components/select2/dist/css/select2.min.css"
+  		th:href="@{/assets/bower_components/select2/dist/css/select2.min.css}"/>
+  		
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="../static/assets/bower_components/bootstrap-daterangepicker/daterangepicker.css"
+  		th:href="@{/assets/bower_components/bootstrap-daterangepicker/daterangepicker.css}"/>
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../static/assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
+  		th:href="@{/assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css}"/>
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="../static/assets/plugins/iCheck/all.css"
+  		th:href="@{/assets/plugins/iCheck/all.css}"/>
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="../static/assets/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css"
+  		th:href="@{/assets/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css}"/>
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="../static/assets/plugins/timepicker/bootstrap-timepicker.min.css"
+  		th:href="@{/assets/plugins/timepicker/bootstrap-timepicker.min.css}"/>
+  
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../static/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css"
+  th:href="@{/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css}"/> 
+  
+	<script type="text/javascript" th:src="@{/js/jquery-1.9.1.min.js}"
+			src="../static/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"
+			src="../static/js/bootstrap.mins.js"></script>
+	<script type="text/javascript" th:src="@{/js/main.js}"
+			src="../static/js/main.js"></script>
+	
+  <!-- Google Font -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"/>
+  <style>
+	    .example-modal .modal {
+	      position: relative;
+	      top: auto;
+	      bottom: auto;
+	      right: auto;
+	      left: auto;
+	      display: block;
+	      z-index: 1;
+	    }
+	
+	    .example-modal .modal {
+	      background: transparent !important;
+    	}
+ 	</style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+  <div>
+   	 <div th:replace="fragment/header"></div>
+     <div th:replace="fragment/menu"></div>
+ 	 <div class="content-wrapper">
+		  <div layout:fragment="content">
+		  </div>
+	 </div>
+     <div th:replace="fragment/footer"></div>
+  </div>
+
+
+
+<!-- jQuery 3 -->
+<script src="../static/assets/bower_components/jquery/dist/jquery.min.js" th:src="@{/assets/bower_components/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../static/assets/bower_components/bootstrap/dist/js/bootstrap.min.js" th:src="@{/assets/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- FastClick -->
+<script src="../static/assets/bower_components/fastclick/lib/fastclick.js" th:src="@{/assets/bower_components/fastclick/lib/fastclick.js}"></script>
+<!-- AdminLTE App -->
+<script src="../static/assets/dist/js/adminlte.min.js" th:src="@{/assets/dist/js/adminlte.min.js}"></script>
+<!-- Sparkline -->
+<script src="../static/assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js" th:src="@{/assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js}"></script>
+<!-- jvectormap  -->
+<script src="../static/assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js" th:src="@{/assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+<script src="../static/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js" th:src="@{/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js}"></script>
+<!-- SlimScroll -->
+<script src="../static/assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js" th:src="@{/assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+<!-- ChartJS -->
+<script src="../static/assets/bower_components/chart.js/chart.js" th:src="@{/assets/bower_components/chart.js/chart.js}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- <script src="../static/assets/dist/js/pages/dashboard2.js" th:src="@{/assets/dist/js/pages/dashboard2.js}"></script> -->
+<!-- AdminLTE for demo purposes -->
+<script src="../static/assets/dist/js/demo.js" th:src="@{/assets/dist/js/demo.js}"></script>
+<!-- Datable -->
+<script src="../satic/assets/bower_components/datatables.net/js/jquery.dataTables.min.js" th:src="@{/assets/bower_components/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script src="../satic/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" th:src="@{/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+
+<!-- cette ligne desactive la reactivite 
+<script src="../satic/assets/dist/js/adminlte.min.js" th:src="@{/assets/dist/js/adminlte.min.js}"></script> -->
+
+<!-- jQuery UI 1.11.4 -->
+<script src="../static/assets/bower_components/jquery-ui/jquery-ui.min.js" th:src="@{/assets/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<script src="../static/assets/dist/js/pages/dashboard.js" th:src="@{/assets/dist/js/pages/dashboard.js}"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="../static/assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" th:src="@{/assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js}"></script>
+<!-- jQuery Knob Chart -->
+<script src="../static/assets/bower_components/jquery-knob/dist/jquery.knob.min.js" th:src="@{/assets/bower_components/jquery-knob/dist/jquery.knob.min.js}"></script>
+<!-- Morris.js charts -->
+<script src="../static/assets/bower_components/raphael/raphael.min.js" th:src="@{/assets/bower_components/raphael/raphael.min.js}"></script>
+<script src="../static/assets/bower_components/morris.js/morris.min.js" th:src="@{/assets/bower_components/morris.js/morris.min.js}"></script>
+
+<!-- daterangepicker -->
+<script src="../static/assets/bower_components/moment/min/moment.min.js" th:src="@{/assets/bower_components/moment/min/moment.min.js}"></script>
+<script src="../static/assets/bower_components/bootstrap-daterangepicker/daterangepicker.js" th:src="@{/assets/bower_components/bootstrap-daterangepicker/daterangepicker.js}"></script>
+
+<!-- page script -->
+<script>
+	  $(function () {
+	    $('#example2').DataTable({
+	      'paging'      : true,
+	      'lengthChange': false,
+	      'searching'   : true,
+	      'ordering'    : true,
+	      'info'        : true,
+	      'autoWidth'   : false
+	    })
+	  })
+
+    $(function () {
+    // Date range picker with time picker
+    $('#reservationtime').daterangepicker({ 
+        singleDatePicker: true, // Permet de sélectionner une seule date
+        timePicker: true, 
+        timePickerIncrement: 30, 
+        locale: { format: 'MM/DD/YYYY hh:mm A' }
+    });
+});
+</script>
+
+
+</body>
+</html>

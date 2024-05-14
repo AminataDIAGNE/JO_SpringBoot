@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{template}">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Informations participant</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box box-primary">
+                            <div class="box-body box-profile">
+                              <img class="profile-user-img img-responsive img-circle" src="assets/dist/img/user1-128x128.jpg" alt="User profile picture">
+                
+                              <h3 class="profile-username text-center" th:text="${participant.nom + ' ' + participant.prenom}"></h3>
+                
+                              <p class="text-muted text-center">Participant</p>
+                
+                              <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Email</b> <a class="pull-right" th:text="${participant.email}"></a>
+                                  </li>
+                                <li class="list-group-item">
+                                  <b>Délégation</b> <a class="pull-right" th:text="${participant.delegation.nom}"></a>
+                                </li>
+                              </ul>
+                              <a th:href="@{/organisateur/participants/delete(id=${participant.id})}" class="del btn btn-danger btn-block"><b>Supprimer</b></a>
+                            </div>
+                        </div>
+                    </div>
+                     <!--Modal Formulaire de Suppression -->
+					          <div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Confirmation Suppression</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <h3><p class="alert alert-default" style="color: red;">Voulez-vous vraiment supprimer cette délégation ?</p></h3>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Non</button>
+                              <a href="" class="btn btn-success" id="delete">Oui</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                              <li class="active"><a href="#activity" data-toggle="tab">Resultats Participant</a></li>
+                              <!--<li><a href="#timeline" data-toggle="tab">Modifier Informations</a></li>-->
+                              <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                            </ul>
+                            <div class="tab-content">
+                              <div class="active tab-pane" id="activity">
+                                <div class="box-body">
+                                    <table id="associateParticipant" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Epreuve</th>
+                                                <th>Infrastructure Sportive</th>
+                                                <th>Temps</th>
+                                                <th>Position</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="r:${resultats}">
+                                                <td th:text="${r.epreuve.nom}"></td>
+                                                <td th:text="${r.epreuve.infrastructureSportive.nom}"></td>
+                                                <td th:text="${r.tempsPoints}"></td>
+                                                <td th:text="${r.position}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                              </div>
+                              <!--
+                                <div class="tab-pane" id="timeline"> </div>
+                              -->
+                              <div class="tab-pane" id="settings">
+                                <form class="form-horizontal">
+                                    
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Identifiant</label>
+                            
+                                        <div class="col-sm-10">
+                                            <input type="text" name="id" readonly="readonly" id="id" class="form-control" placeholder="nom" th:value="${participant.id}"/>
+                                        </div>
+                                      </div>
+                                  <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Nom</label>
+                        
+                                    <div class="col-sm-10">
+                                      <input type="text" name="nom" required = "required" id="nom" class="form-control" placeholder="nom" th:value="${participant.nom}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Prénom</label>
+                        
+                                    <div class="col-sm-10">
+                                        <input type="text" name="prenom" required = "required" id="prenom" class="form-control" placeholder="Prénom" th:value="${participant.prenom}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                        
+                                    <div class="col-sm-10">
+                                      <input type="email" name="email" class="form-control" id="email" placeholder="Email" th:value="${participant.email}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+	</body>
+</html>

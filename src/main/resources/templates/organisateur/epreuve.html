@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{template}">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Epreuve</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<!-- Main content -->
+			<section class="content">
+			  <div class="row">
+				<div class="col-xs-12">
+				  <div class="box col-xs-6"><br/>
+				  	<div class="row">
+						<div class="col-xs-12">
+							<div class="box box-default">
+								<div class="box-header with-border">
+									<h3 class="box-title">Liste des épreuves</h3>
+								</div>
+							  	<div class="box-body">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+								   		<i class="fa fa-fw fa-plus"></i> Créer une épreuve
+								  	</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			   		<!--Modal Formulaire d'ajout -->
+					  <div class="form">
+						  <form th:action="@{/organisateur/epreuves/new}" method="post" name="formSave">
+							  <div class="modal fade" id="modal-default">
+								  <div class="modal-dialog">
+									  <div class="modal-content">
+										  <div class="modal-header">
+											  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												  <span aria-hidden="true">&times;</span></button>
+											  <h4 class="modal-title">Formulaire d'ajout épreuve</h4>
+										  </div>
+										  <div class="modal-body">
+											  <div class="col-md-12">
+												  <div class="row">
+													  <div class="form-group">
+														  <label>Nom *</label>
+														  <input type="text" name="nom" required = "required" id="nom" class="form-control" placeholder="nom"/>
+													  </div>
+												  </div>
+                                                  <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Nombre de Places Mises En Vente</label>
+                                                        <input type="text" name="nombrePlacesMisesEnVente" id="nbPlace" class="form-control" required = "required" placeholder="Nombre de Places Mises En Vente"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Date et Heure * </label>
+                                                        <div class="input-group">
+                                                          <div class="input-group-addon">
+                                                            <i class="fa fa-clock-o"></i>
+                                                          </div>
+                                                          <input type="text" class="form-control pull-right" name="date" required = "required" id="reservationtime" placeholder=" Date de l'epreuve">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label for="infras">Infrastructure Sportive *</label>
+                                                        <select class="form-control" id="infras" name="idInfrasSportive" required>
+                                                            <option th:each="infra : ${infraSportives}"
+                                                                    th:value="${infra.id}"
+                                                                    th:text="${infra.nom}"></option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+											  </div>
+										  </div>
+										  <div class="modal-footer">
+											  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">fermer</button>
+											  <input type="submit" class="btn btn-facebook" value="enregistrer" id="btnSave"/>
+										  </div>
+									  </div>
+								  </div>
+							  </div>
+						  </form>
+					  </div>
+					 <!--Modal Formulaire de Suppression -->
+					<div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Confirmation Suppression</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						  </div>
+						  <div class="modal-body">
+							  <h3><p class="alert alert-default" style="color: red;">Voulez-vous vraiment supprimer l'épreuve ?</p></h3>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Non</button>
+							<a href="" class="btn btn-success" id="delete">Oui</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+				<!-- Formulaire de modification -->
+				<div class="formEdit">
+					 <form th:action="@{/organisateur/epreuves/edit}" method="post" name="formSave">
+						<div class="modal modal-default fade" id="modal-primary">
+						  <div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Formulaire de modification épreuve</h4>
+							  </div>
+							  <div class="modal-body">
+								 <div class="box-body">
+									 <div class="row">
+										 <div class="col-md-12">
+											 <div class="row">
+												 <div class="form-group">
+													 <label>Identifiant</label>
+													 <input type="text" readonly name="id" id="idEpreuve" class="form-control" placeholder="Id délégation"/>
+												 </div>
+												 <div class="form-group">
+                                                    <label>Nom *</label>
+                                                    <input type="text" name="nom" required = "required" id="nom" class="form-control" placeholder="nom"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Nombre de Places Mises En Vente *</label>
+                                                    <input type="text" name="nombrePlacesMisesEnVente" id="nbPlace" class="form-control" required = "required" placeholder="Nombre de Places Mises En Vente"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Date et Heure * </label>
+                                                    <div class="input-group">
+                                                      <div class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                      </div>
+                                                      <input type="text" class="form-control pull-right" name="date" required = "required" id="reservationtime" placeholder=" Date de l'epreuve">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="infras">Infrastructure Sportive *</label>
+                                                    <select class="form-control" id="infras" name="idInfrasSportive" required>
+                                                        <option th:each="infra : ${infraSportives}"
+                                                                th:value="${infra.id}"
+                                                                th:text="${infra.nom}"></option>
+                                                    </select>
+                                                </div>
+                                                
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+								<input type="submit" class="btn btn-primary" value="Enregistrer" id="btnSave"/>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					 </form>
+				</div>
+				<div class="box-body">
+					<table id="example2" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Modifier</th>
+								<th>Epreuve</th>
+								<th>Nombre de places mise en vente</th>
+								<th>Date </th>
+                                <th>Infrastructure Sportive</th>
+                                <th>Adress Inf. Sportive</th>
+								<th>Details</th>
+								<th>Supprimer</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="e:${epreuves}">
+								<td>
+									<a th:href="@{/organisateur/epreuves/findOne(id=${e.id})}" class="editEpreuve"><i class="fa fa-fw fa-edit"></i></a>
+								</td>
+						  		<td th:text="${e.nom}"></td>
+                                <td th:text="${e.nombrePlacesMisesEnVente}"></td>
+                                <td th:text="${e.date}"></td>
+                                <td th:text="${e.infrastructureSportive.nom}"></td>
+                                <td th:text="${e.infrastructureSportive.adresse}"></td>
+								<td>
+									<a th:href="@{/organisateur/epreuves/details(id=${e.id})}"><i class="fa fa-fw fa-eye"></i></a>
+								</td>
+						  		<td>
+							  		<a th:href="@{/organisateur/epreuves/delete(id=${e.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+						  		</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Modifier</th>
+								<th>Epreuve</th>
+								<th>Nombre de places mise en vente</th>
+								<th>Date </th>
+                                <th>Inf. Sportive</th>
+                                <th>Adress Inf. Sportive</th>
+								<th>Details</th>
+								<th>Supprimer</th>
+							</tr>
+						</tfoot>
+					  </table>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</section>
+		</div>  
+	</body>
+</html>
