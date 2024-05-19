@@ -16,4 +16,7 @@ public interface EpreuveService {
 
     void deleteEpreuve(Long epreuveId);
 
+    EpreuveDto inscrireParticipant(Long epreuveId, Long participantId);
+
+    void desinscrireParticipant(Long epreuveId, Long participantId);
 }

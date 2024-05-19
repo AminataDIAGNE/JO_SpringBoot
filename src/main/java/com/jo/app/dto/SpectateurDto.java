@@ -2,6 +2,7 @@ package com.jo.app.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.validation.constraints.Email;
@@ -25,7 +26,7 @@ public class SpectateurDto {
     @NotEmpty(message = "L'email est obligatoire")
     @Email
     private String email;
-    
+    @JsonIgnore
     @JsonIgnoreProperties("spectateurDto")
     private List<BilletDto> billets;
 }

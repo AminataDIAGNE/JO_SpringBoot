@@ -10,18 +10,22 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.jo.app.entity.Billet;
 import com.jo.app.entity.Delegation;
 import com.jo.app.entity.Epreuve;
 import com.jo.app.entity.InfrastructureSportive;
 import com.jo.app.entity.Participant;
 import com.jo.app.entity.Resultat;
+import com.jo.app.entity.Spectateur;
+import com.jo.app.repository.BilletRepository;
 import com.jo.app.repository.DelegationRepository;
 import com.jo.app.repository.EpreuveRepository;
 import com.jo.app.repository.InfrastructureSportiveRepository;
 import com.jo.app.repository.ParticipantRepository;
 import com.jo.app.repository.ResultatRepository;
+import com.jo.app.repository.SpectateurRepository;
+import com.jo.app.util.Etat;
 
-import jakarta.transaction.Transactional;
 
 @SpringBootApplication
 public class JOApplication implements CommandLineRunner{
@@ -40,6 +44,12 @@ public class JOApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EpreuveRepository epreuveRepository;
+	
+	@Autowired
+	private SpectateurRepository spectateurRepository;
+	
+	@Autowired
+	private BilletRepository billetRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(JOApplication.class, args);
@@ -89,7 +99,8 @@ public class JOApplication implements CommandLineRunner{
         Epreuve epreuve1 = new Epreuve();
         epreuve1.setDate(dateTimeFromParts);
         epreuve1.setNom("Jeux Olympique");
-        epreuve1.setNombrePlacesMisesEnVente(60000);
+        epreuve1.setNombrePlacesMisesEnVente(10);
+        epreuve1.setPrixUnitaireBillet(10.);
         epreuve1.setInfrastructureSportive(infras1);
         epreuveRepository.saveAll(Arrays.asList(epreuve1));
         
@@ -112,7 +123,21 @@ public class JOApplication implements CommandLineRunner{
         resultat3.setTempsPoints(9);
         resultat3.setEpreuve(epreuve1);
         resultatRepository.saveAll(Arrays.asList(resultat1, resultat2, resultat3));
-
+        
+        Spectateur spectateur1 = new Spectateur();
+        spectateur1.setNom("Danet");
+        spectateur1.setPrenom("Chloé");
+        spectateur1.setEmail("chloe@gmail.com");
+        spectateurRepository.saveAll(Arrays.asList(spectateur1));
+        
+        Billet billet1 = new Billet();
+        billet1.setEpreuve(epreuve1);
+        billet1.setSpectateur(spectateur1);
+        billet1.setQuantite(2);
+        billet1.setPrixTotal(epreuve1.getPrixUnitaireBillet()*billet1.getQuantite());
+        billet1.setEtat(Etat.VALIDE);
+        billetRepository.saveAll(Arrays.asList(billet1));
+        
         // fonctionne si la methode est annotée comme étant transactionnelle
         //participantRepository.deleteById(participant3.getId());
         //delegationRepository.deleteById(delegation2.getId());

@@ -1,5 +1,7 @@
 package com.jo.app.entity;
 
+import com.jo.app.util.Etat;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +26,13 @@ public class Billet {
     @JoinColumn(name = "spectateur_id")
     private Spectateur spectateur;
     
-    private double prix;
+    private double prixTotal;
     
-    private String etat; // pour la gestion des annulations
+    private int quantite;
+    
+    private Etat etat; // pour la gestion des annulations
+
+    // Champs supplémentaires pour les détails du remboursement
+    private double montantRemboursement;
+    private String messageConfirmation;
 }

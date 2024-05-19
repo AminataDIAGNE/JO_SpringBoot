@@ -1,5 +1,6 @@
 package com.jo.app.entity;
 
+import com.jo.app.util.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,5 +31,5 @@ public class Organisateur {
     @Column(nullable = false)
     private String email;
     
-    private String role;
+    private Role role;
 }

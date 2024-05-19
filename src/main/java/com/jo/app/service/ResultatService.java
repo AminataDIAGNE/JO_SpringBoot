@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.jo.app.dto.ResultatDto;
 
-public interface Resultatervice {
+public interface ResultatService {
 
 	List<ResultatDto> findAllResultats();
 	

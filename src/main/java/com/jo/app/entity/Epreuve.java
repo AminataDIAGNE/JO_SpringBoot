@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -29,13 +31,25 @@ public class Epreuve {
     @Column(nullable = false)
     private int nombrePlacesMisesEnVente;
     
+    @Column(nullable = false)
+    private double prixUnitaireBillet;
+    
     @ManyToOne
     @JoinColumn(name = "infrastructure_id", nullable = false)
     private InfrastructureSportive infrastructureSportive;
     
     @OneToMany(mappedBy = "epreuve", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Billet> billets;
     
     @OneToMany(mappedBy = "epreuve", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Resultat> resultats;
+
+    @ManyToMany(mappedBy = "epreuves")
+    private List<Participant> participants;
+
+    @Column(nullable = false)
+    private int nombreLimiteParticipant;
+
 }

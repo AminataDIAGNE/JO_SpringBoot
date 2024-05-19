@@ -2,6 +2,7 @@ package com.jo.app.service;
 
 import java.util.List;
 
+import com.jo.app.dto.EpreuveDto;
 import com.jo.app.dto.ParticipantDto;
 
 public interface ParticipantService {
