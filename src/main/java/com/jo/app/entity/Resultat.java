@@ -27,5 +27,7 @@ public class Resultat {
 	 private int tempsPoints;
 	 
 	 private int position;
+
+	 boolean forfait ;
 	
 }

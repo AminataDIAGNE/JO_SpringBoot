@@ -4,6 +4,8 @@ package com.jo.app.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jo.app.entity.Epreuve;
 import com.jo.app.entity.Spectateur;
+import com.jo.app.util.Etat;
+
 import lombok.*;
 
 
@@ -21,7 +23,12 @@ public class BilletDto {
 	@JsonIgnoreProperties("billets")
     private Spectateur spectateur;
     
-    private double prix;
+    private double prixTotal;
     
-    private String etat;
+    private int quantite;
+    
+    private Etat etat;
+    // Champs supplémentaires pour les détails du remboursement
+    private double montantRemboursement;
+    private String messageConfirmation;
 }

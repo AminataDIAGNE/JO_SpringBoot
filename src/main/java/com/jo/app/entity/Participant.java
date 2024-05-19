@@ -35,4 +35,11 @@ public class Participant {
     @OneToMany(mappedBy = "participant", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Resultat> resultats;
 
+    @ManyToMany
+    @JoinTable(
+            name = "epreuve_participant",
+            joinColumns = @JoinColumn(name = "participant_id"),
+            inverseJoinColumns = @JoinColumn(name = "epreuve_id")
+    )
+    private List<Epreuve> epreuves;
 }

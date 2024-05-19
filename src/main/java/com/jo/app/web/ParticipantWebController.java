@@ -5,7 +5,7 @@ import com.jo.app.dto.ResultatDto;
 import com.jo.app.mapper.DelegationMapper;
 import com.jo.app.service.DelegationService;
 import com.jo.app.service.ParticipantService;
-import com.jo.app.service.Resultatervice;
+import com.jo.app.service.ResultatService;
 
 import java.util.ArrayList;
 
@@ -21,9 +21,9 @@ public class ParticipantWebController {
     
     private final DelegationService delegationService;
     
-    private final Resultatervice resultatervice;
+    private final ResultatService resultatervice;
 
-    public ParticipantWebController(ParticipantService participantService, Resultatervice resultatervice, DelegationService delegationService) {
+    public ParticipantWebController(ParticipantService participantService, ResultatService resultatervice, DelegationService delegationService) {
         this.participantService = participantService;
         this.resultatervice = resultatervice;
         this.delegationService = delegationService;

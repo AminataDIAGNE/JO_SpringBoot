@@ -1,74 +1,66 @@
 package com.jo.app.controller;
 
-import java.util.List;
-
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.jo.app.dto.DelegationDto;
 import com.jo.app.dto.EpreuveDto;
-import com.jo.app.mapper.DelegationMapper;
-import com.jo.app.service.DelegationService;
 import com.jo.app.service.EpreuveService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/v1/epreuves", produces = "application/json")
 public class EpreuveController {
 
-    private EpreuveService epreuveService;
-    private DelegationService delegationService;
+    private final EpreuveService epreuveService;
 
-    public EpreuveController(EpreuveService epreuveService, DelegationService delegationService) {
+    public EpreuveController(EpreuveService epreuveService) {
         this.epreuveService = epreuveService;
-        this.delegationService = delegationService;
     }
 
-
     @GetMapping
-    public List<EpreuveDto> getAllEpreuves(){
+    public List<EpreuveDto> getAllEpreuves() {
         return epreuveService.findAllEpreuves();
     }
 
     @GetMapping("/{id}")
-    public EpreuveDto getEpreuveById(@PathVariable Long id){
-        return epreuveService.findEpreuveById(id);
+    public EpreuveDto getEpreuveById(@PathVariable("id") Long epreuveId) {
+        return epreuveService.findEpreuveById(epreuveId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createEpreuve(@RequestBody @Valid EpreuveDto epreuveDto){
+    public void createEpreuve(@RequestBody EpreuveDto epreuveDto) {
+    	
+    	if(epreuveDto.getNombrePlacesMisesEnVente() > epreuveDto.getInfrastructureSportive().getCapacite()) {
+    		 throw new RuntimeException("Le nombre de place mise en vente ne doit pas etre supérieur à la capacité de l'infrastructure sportive");
+    	}
         epreuveService.createEpreuve(epreuveDto);
     }
 
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateEpreuve(@PathVariable Long id, @RequestBody EpreuveDto epreuveDto){
-        epreuveDto.setId(id);
+    public void updateEpreuve(@PathVariable("id") Long epreuveId, @RequestBody EpreuveDto epreuveDto) {
+    	if(epreuveDto.getNombrePlacesMisesEnVente() > epreuveDto.getInfrastructureSportive().getCapacite()) {
+   		 	throw new RuntimeException("Le nombre de place mise en vente ne doit pas etre supérieur à la capacité de l'infrastructure sportive");
+    	}
+        epreuveDto.setId(epreuveId);
         epreuveService.updateEpreuve(epreuveDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEpreuve(@PathVariable Long id){
-        epreuveService.deleteEpreuve(id);
+    public void deleteEpreuve(@PathVariable("id") Long epreuveId) {
+        epreuveService.deleteEpreuve(epreuveId);
     }
 
+    @PostMapping("/{participantId}/inscrire/{epreuveId}")
+    public EpreuveDto inscrireParticipant(@PathVariable Long participantId, @PathVariable Long epreuveId) {
+        return epreuveService.inscrireParticipant(epreuveId, participantId);
+    }
+
+    @DeleteMapping("/{participantId}/desinscrire/{epreuveId}")
+    public void desinscrireParticipant(@PathVariable Long participantId, @PathVariable Long epreuveId) {
+        epreuveService.desinscrireParticipant(epreuveId, participantId);
+    }
 
 }

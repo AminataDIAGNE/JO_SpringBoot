@@ -14,7 +14,8 @@ public class BilletMapper {
 	public static BilletDto mapToBilletDto(Billet billet){
         return BilletDto.builder()
                 .id(billet.getId())
-                .prix(billet.getPrix())
+                .prixTotal(billet.getPrixTotal())
+                .quantite(billet.getQuantite())
                 .etat(billet.getEtat())
                 .epreuve(billet.getEpreuve())
                 .spectateur(billet.getSpectateur())
@@ -30,7 +31,8 @@ public class BilletMapper {
 	public static Billet mapToBillet(BilletDto billetDto){
         return Billet.builder()
         		.id(billetDto.getId())
-                .prix(billetDto.getPrix())
+                .prixTotal(billetDto.getPrixTotal())
+                .quantite(billetDto.getQuantite())
                 .etat(billetDto.getEtat())
                 .epreuve(billetDto.getEpreuve())
                 .spectateur(billetDto.getSpectateur())
