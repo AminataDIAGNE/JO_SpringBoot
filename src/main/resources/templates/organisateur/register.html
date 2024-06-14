@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{template}">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Inscription</title>
+	</head>
+	<body class="hold-transition register-page">
+		<div layout:fragment="content">
+            <div class="register-box">
+                <div class="register-logo">
+                  <a href="#"><b>Jeu</b>Olympique</a>
+                </div>
+              
+                <div class="register-box-body">
+                  <p class="login-box-msg">Inscription Controleur/Organisateur</p>
+                  <div th:if="${param.success}">
+                    <div class="alert alert-info">Votre compte a été créé avec succès</div>
+                  </div>
+                  <form th:action="@{/register/save}" th:object="${user}" role="form" method="post">
+                    <div class="form-group has-feedback">
+                      <input type="text" id="nom" name="nom" th:field="*{nom}" class="form-control" placeholder="Nom">
+                      <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                      <p th:if="${#fields.hasErrors('nom')}" class="text-danger" th:errors="*{nom}"></p>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" id="prenom" name="prenom" th:field="*{prenom}" class="form-control" placeholder="Prénom">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        <p th:if="${#fields.hasErrors('prenom')}" class="text-danger" th:errors="*{prenom}"></p>
+                      </div>
+                    <div class="form-group has-feedback">
+                      <input type="email" id="email" name="email" th:field="*{email}" class="form-control" placeholder="Enter Email Id">
+                      <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                      <p th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></p>
+                    </div>
+                    <div class="form-group has-feedback">
+                      <input type="password" id="password" name="password" th:field="*{password}" class="form-control" placeholder="Enter Password">
+                      <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                      <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
+                    </div>
+                    <div class="form-group has-feedback">
+                      <input type="password" id="retypePwd" name="retypePwd" th:field="*{retypePwd}" class="form-control" placeholder="Confirme password">
+                      <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                      <p th:if="${#fields.hasErrors('retypePwd')}" class="text-danger" th:errors="*{retypePwd}"></p>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <!-- 
+                        <div class="checkbox icheck">
+                          <label>
+                            <input type="checkbox"> I agree to the <a href="#">terms</a>
+                          </label>
+                        </div>
+                        -->
+                      </div>
+                      <div class="col-xs-6">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Inscription</button>
+                      </div>
+                    </div>
+                  </form>
+                  <span>
+                    Déja inscris ? <a href="/login" class="text-center">se connecter ici </a>
+                  </span>
+                  
+                </div>
+		</div>
+  </body>
+</html>

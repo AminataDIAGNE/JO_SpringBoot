@@ -18,11 +18,13 @@ public class DelegationController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<DelegationDto> getAllDelegations() {
         return delegationService.findAllDelegations();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public DelegationDto getDelegationById(@PathVariable("id") Long delegationId) {
         return delegationService.findDelegationById(delegationId);
     }

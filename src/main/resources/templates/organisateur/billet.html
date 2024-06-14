@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{template}">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Billet</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<!-- Main content -->
+			<section class="content">
+			  <div class="row">
+				<div class="col-xs-12">
+				  <div class="box col-xs-6"><br/>
+				  	<div class="row">
+						<div class="col-xs-12">
+							<div class="box box-default">
+								<div class="box-header with-border">
+									<h3 class="box-title">Liste des billets</h3>
+								</div>
+							  	<div class="box-body">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+								   		<i class="fa fa-fw fa-plus"></i> Acheter un billet
+								  	</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			   		<!--Modal Formulaire d'ajout -->
+					  <div class="form">
+						  <form th:action="@{/organisateur/billets/new}" method="post" name="formSave">
+							  <div class="modal fade" id="modal-default">
+								  <div class="modal-dialog">
+									  <div class="modal-content">
+										  <div class="modal-header">
+											  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												  <span aria-hidden="true">&times;</span></button>
+											  <h4 class="modal-title">Acheter un billet</h4>
+										  </div>
+										  <div class="modal-body">
+											  <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label for="epreuve">Epreuve *</label>
+                                                        <select class="form-control" id="epreuve" name="idEpreuve" required>
+                                                            <option th:each="ep : ${epreuves}"
+                                                                    th:value="${ep.id}"
+                                                                    th:text="${ep.nom}">
+															</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+												<div class="row">
+                                                    <div class="form-group">
+                                                        <label for="spec">Spectateur *</label>
+                                                        <select class="form-control" id="spec" name="idSpectateur" required>
+                                                            <option th:each="sp : ${spectateurs}"
+                                                                    th:value="${sp.id}"
+                                                                    th:text="${sp.nom}">
+															</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+												<div class="row">
+													<div class="form-group">
+														<label>Quantite *</label>
+														<input type="text" name="quantite" required = "required" id="quantite" class="form-control" placeholder="Saisir quantite"/>
+													</div>
+												</div>
+											  </div>
+										  </div>
+										  <div class="modal-footer">
+											  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">fermer</button>
+											  <input type="submit" class="btn btn-facebook" value="enregistrer" id="btnSave"/>
+										  </div>
+									  </div>
+								  </div>
+							  </div>
+						  </form>
+					  </div>
+					 <!--Modal Formulaire de Suppression -->
+					<div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Confirmation Suppression</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						  </div>
+						  <div class="modal-body">
+							  <h3><p class="alert alert-default" style="color: red;">Voulez-vous vraiment supprimer le billets ?</p></h3>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Non</button>
+							<a href="" class="btn btn-success" id="delete">Oui</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+				<!-- Formulaire de modification -->
+				<div class="formEdit">
+					 <form th:action="@{/organisateur/billets/edit}" method="post" name="formSave">
+						<div class="modal modal-default fade" id="modal-primary">
+						  <div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Formulaire de modification épreuve</h4>
+							  </div>
+							  <div class="modal-body">
+								 <div class="box-body">
+									 <div class="row">
+										 <div class="col-md-12">
+											 <div class="row">
+												 <div class="form-group">
+													 <label>Identifiant</label>
+													 <input type="text" readonly name="id" id="idBillet" class="form-control" placeholder="Id délégation"/>
+												 </div>
+												 <div class="form-group">
+													<label for="epreuve">Epreuve *</label>
+													<select class="form-control" id="epreuve" name="epreuve" required>
+														<option th:each="ep : ${epreuves}"
+																th:value="${ep.id}"
+																th:text="${ep.nom}">
+														</option>
+													</select>
+												</div>
+                                                <div class="form-group">
+													<label for="spec">Spectateur *</label>
+													<select class="form-control" id="spec" name="spectateur" required>
+														<option th:each="sp : ${spectateurs}"
+																th:value="${sp.id}"
+																th:text="${sp.nom}">
+														</option>
+													</select>
+												</div>
+                                                <div class="form-group">
+													<label>Quantite *</label>
+													<input type="text" name="quantite" required = "required" id="quantite" class="form-control" placeholder="Saisir quantite"/>
+												</div>         
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+								<input type="submit" class="btn btn-primary" value="Enregistrer" id="btnSave"/>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					 </form>
+				</div>
+				<div class="box-body">
+					<table id="example2" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Modifier</th>
+								<th>Epreuve</th>
+								<th>Spectateur</th>
+								<th>Quantite </th>
+                                <th>Prix</th>
+								<th>Etat </th>
+								<th>Details</th>
+								<th>Supprimer</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="b:${billets}">
+								<td>
+									<a th:href="@{/organisateur/billets/findOne(id=${b.id})}" class="editBillet"><i class="fa fa-fw fa-edit"></i></a>
+								</td>
+						  		<td th:text="${b.epreuve.nom}"></td>
+                                <td th:text="${b.spectateur.nom}"></td>
+                                <td th:text="${b.quantite}"></td>
+                                <td th:text="${b.prixTotal}"></td>
+								<td th:text="${b.etat}"></td>
+								<td>
+									<a th:href="@{/organisateur/billets/details(id=${b.id})}"><i class="fa fa-fw fa-eye"></i></a>
+								</td>
+						  		<td>
+							  		<a th:href="@{/organisateur/billets/delete(id=${b.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+						  		</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Modifier</th>
+								<th>Epreuve</th>
+								<th>Spectateur</th>
+								<th>Quantite </th>
+                                <th>Prix</th>
+								<th>Etat </th>
+								<th>Details</th>
+								<th>Supprimer</th>
+							</tr>
+						</tfoot>
+					  </table>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</section>
+		</div>  
+	</body>
+</html>

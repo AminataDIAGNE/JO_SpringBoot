@@ -1,12 +1,11 @@
 package com.jo.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Setter
 @Getter
@@ -33,23 +32,27 @@ public class Epreuve {
     
     @Column(nullable = false)
     private double prixUnitaireBillet;
-    
+
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "infrastructure_id", nullable = false)
     private InfrastructureSportive infrastructureSportive;
-    
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "epreuve", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonIgnore
     private List<Billet> billets;
-    
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "epreuve", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonIgnore
     private List<Resultat> resultats;
 
+    @JsonManagedReference
     @ManyToMany(mappedBy = "epreuves")
     private List<Participant> participants;
 
     @Column(nullable = false)
     private int nombreLimiteParticipant;
+
+    private Long idInfrasSportive;
 
 }

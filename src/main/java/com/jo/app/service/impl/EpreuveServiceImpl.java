@@ -10,7 +10,6 @@ import com.jo.app.entity.Resultat;
 import com.jo.app.repository.ParticipantRepository;
 import com.jo.app.repository.ResultatRepository;
 import com.jo.app.service.InfrastructureSportiveService;
-import com.jo.app.service.ParticipantService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +56,9 @@ public class EpreuveServiceImpl implements EpreuveService{
 	@Override
 	public EpreuveDto findEpreuveById(Long epreuveId) {
 		Epreuve epreuve = epreuveRepository.findById(epreuveId).get();
+		if (epreuve == null) {
+			throw new IllegalStateException("L'Epreuve n'existe pas");
+		}
 		return EpreuveMapper.mapToEpreuveDto(epreuve);
 	}
 
@@ -84,10 +86,12 @@ public class EpreuveServiceImpl implements EpreuveService{
 				.orElseThrow(() -> new IllegalArgumentException("Participant non trouvé"));
 
 		LocalDateTime currentDate = LocalDateTime.now();
+		if ((participant.getEpreuves().contains(epreuve))) {
+			throw new IllegalStateException("participant déjà inscrite dans la liste de l' epreuve");
+		}
 		if (ChronoUnit.DAYS.between(currentDate, epreuve.getDate()) <= 10) {
 			throw new IllegalStateException("Les inscriptions sont clôturées pour cette épreuve.");
 		}
-
 		if (epreuve.getParticipants().size() >= epreuve.getNombreLimiteParticipant()) {
 			throw new IllegalStateException("Nombre de places maximum atteint pour cette épreuve.");
 		}

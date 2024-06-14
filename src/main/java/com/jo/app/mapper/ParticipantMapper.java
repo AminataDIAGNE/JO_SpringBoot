@@ -28,6 +28,7 @@ public class ParticipantMapper {
                 .resultats(resultats.stream()
                         .map((res) -> ResultatMapper.mapToResultatDto(res))
                         .collect(Collectors.toList()))
+                .user(participant.getUser())
                 .build();
     }
 	
@@ -48,6 +49,7 @@ public class ParticipantMapper {
                 .resultats(resultats.stream()
                         .map((res) -> ResultatMapper.mapToResultat(res))
                         .collect(Collectors.toList()))
+                .user(participantDto.getUser())
                 .build();
     }
 

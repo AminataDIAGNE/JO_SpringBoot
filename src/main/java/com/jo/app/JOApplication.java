@@ -16,14 +16,18 @@ import com.jo.app.entity.Epreuve;
 import com.jo.app.entity.InfrastructureSportive;
 import com.jo.app.entity.Participant;
 import com.jo.app.entity.Resultat;
+import com.jo.app.entity.Role;
 import com.jo.app.entity.Spectateur;
+import com.jo.app.entity.User;
 import com.jo.app.repository.BilletRepository;
 import com.jo.app.repository.DelegationRepository;
 import com.jo.app.repository.EpreuveRepository;
 import com.jo.app.repository.InfrastructureSportiveRepository;
 import com.jo.app.repository.ParticipantRepository;
 import com.jo.app.repository.ResultatRepository;
+import com.jo.app.repository.RoleRepository;
 import com.jo.app.repository.SpectateurRepository;
+import com.jo.app.repository.UserRepository;
 import com.jo.app.util.Etat;
 
 
@@ -50,6 +54,12 @@ public class JOApplication implements CommandLineRunner{
 	
 	@Autowired
 	private BilletRepository billetRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(JOApplication.class, args);
@@ -137,6 +147,27 @@ public class JOApplication implements CommandLineRunner{
         billet1.setPrixTotal(epreuve1.getPrixUnitaireBillet()*billet1.getQuantite());
         billet1.setEtat(Etat.VALIDE);
         billetRepository.saveAll(Arrays.asList(billet1));
+        
+        
+        User user = new User();
+        user.setName("Aminata Diagne");
+        user.setEmail("amina@gmail.com");
+        user.setPassword("1234");
+        //user.setRoles(Arrays.asList(role1, role2, role3, role4));
+        userRepository.saveAll(Arrays.asList(user));
+        
+        Role role1 = new Role();
+        role1.setName(com.jo.app.util.Role.CONTROLEUR.getLibelle());
+        Role role2 = new Role();
+        role2.setName(com.jo.app.util.Role.ORGANISATEUR.getLibelle());
+        Role role3= new Role();
+        role3.setName(com.jo.app.util.Role.SPECTATEUR.getLibelle());
+        Role role4= new Role();
+        role4.setName(com.jo.app.util.Role.PARTICIPANT.getLibelle());
+        roleRepository.saveAll(Arrays.asList(role1, role2, role3, role4));
+        
+        user.setRoles(Arrays.asList(role1, role2, role3, role4));
+        userRepository.saveAndFlush(user);
         
         // fonctionne si la methode est annotée comme étant transactionnelle
         //participantRepository.deleteById(participant3.getId());

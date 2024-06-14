@@ -18,11 +18,13 @@ public class InfrastructureSportiveController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<InfrastructureSportiveDto> getAllInfrastructureSportives() {
         return infrastructureSportiveService.findAllInfrastructureSportives();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public InfrastructureSportiveDto getInfrastructureSportiveById(@PathVariable("id") Long infrastructureSportiveId) {
         return infrastructureSportiveService.findInfrastructureSportiveById(infrastructureSportiveId);
     }

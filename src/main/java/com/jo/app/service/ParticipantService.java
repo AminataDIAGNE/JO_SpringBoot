@@ -2,7 +2,6 @@ package com.jo.app.service;
 
 import java.util.List;
 
-import com.jo.app.dto.EpreuveDto;
 import com.jo.app.dto.ParticipantDto;
 
 public interface ParticipantService {
@@ -34,7 +33,6 @@ public interface ParticipantService {
      *
      * @param participantId L'identifiant du participant à récupérer.
      * @return Les informations du participant correspondant.
-     * @throws EntityNotFoundException si aucun participant correspondant n'est trouvé.
      */
     ParticipantDto findParticipantById(Long participantId);
 

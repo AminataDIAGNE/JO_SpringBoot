@@ -2,7 +2,7 @@ package com.jo.app.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,8 +23,8 @@ public class InfrastructureSportive {
     private String nom;
     private String adresse;
     private int capacite;
-    
+
+    @JsonBackReference
     @OneToMany(mappedBy = "infrastructureSportive", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonIgnore
     private List<Epreuve> epreuves;
 }

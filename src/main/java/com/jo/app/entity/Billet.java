@@ -1,5 +1,6 @@
 package com.jo.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jo.app.util.Etat;
 
 import jakarta.persistence.*;
@@ -17,11 +18,13 @@ public class Billet {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "epreuve_id")
     private Epreuve epreuve;
-    
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "spectateur_id")
     private Spectateur spectateur;

@@ -25,7 +25,6 @@ public interface DelegationService {
      *
      * @param delegationId L'identifiant de la délégation à récupérer.
      * @return Les informations de la délégation correspondante.
-     * @throws EntityNotFoundException si aucune délégation correspondante n'est trouvée.
      */
     DelegationDto findDelegationById(Long delegationId);
 

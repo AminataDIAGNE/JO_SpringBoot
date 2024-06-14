@@ -81,8 +81,14 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long>{
 	 * @return compte le nombre total de participants appartenant à une délégation spécifique.
 	 */
 	long countByDelegationId(Long delegationId);
+
 	
-	
+	/**
+	 *
+	 * @param email
+	 * @return recherche et renvoie un participant ayant un email spécifique.
+	 */
+	Participant findByEmail(String email);
 
 
 }

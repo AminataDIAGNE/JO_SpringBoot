@@ -21,11 +21,13 @@ public class ResultatController {
 
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<ResultatDto> getAllResultats(){
         return resultatService.findAllResultats();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResultatDto getResultatById(@PathVariable Long id){
         return resultatService.findResultatById(id);
     }

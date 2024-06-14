@@ -31,6 +31,10 @@ public class DelegationServiceImpl implements DelegationService{
 
 	@Override
 	public void createDelegation(DelegationDto delegationDto) {
+		Delegation existingDelegation = delegationRepository.findByNom(delegationDto.getNom()).get();
+		if (existingDelegation != null) {
+			throw new RuntimeException("delegation exist.");
+		}
 		Delegation delegation = DelegationMapper.mapToDelegation(delegationDto);
 		delegationRepository.save(delegation);
 		

@@ -1,8 +1,10 @@
 package com.jo.app.util;
 
 public enum Role {
-    ORGANISATEUR("Organisateur"),
-    CONTROLEUR("Controleur");
+    ORGANISATEUR("ORGANISATEUR"),
+    CONTROLEUR("CONTROLEUR"),
+    PARTICIPANT("PARTICIPANT"),
+    SPECTATEUR("SPECTATEUR");
 
     private String libelle;
 

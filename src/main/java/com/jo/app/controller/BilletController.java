@@ -22,11 +22,13 @@ public class BilletController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<BilletDto> getAllBillets() {
         return billetService.findAllBillets();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public BilletDto getBilletById(@PathVariable("id") Long billetId) {
         return billetService.findBilletById(billetId);
     }
@@ -81,7 +83,7 @@ public class BilletController {
 
     @PutMapping("/controle/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void controlle(@PathVariable("id") Long billetId, @RequestBody BilletDto billetDto) {
+    public void controle(@PathVariable("id") Long billetId, @RequestBody BilletDto billetDto) {
         try {
             billetDto.setId(billetId);
             billetService.controle(billetDto);

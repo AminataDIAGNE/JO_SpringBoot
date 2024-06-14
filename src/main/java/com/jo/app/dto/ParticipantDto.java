@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jo.app.entity.Delegation;
+import com.jo.app.entity.User;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -27,15 +28,25 @@ public class ParticipantDto {
     @NotEmpty(message = "l'email est obligatoire")
     @Email
     private String email;
-    @JsonIgnore
+
     @JsonIgnoreProperties("participants")
     private Delegation delegation;
 
-    private Long idDelegation;
     @JsonIgnore
+    private Long idDelegation;
+
     @JsonIgnoreProperties("participantDto")
 	 private List<ResultatDto> resultats;
 
-    @JsonIgnore
     private List<EpreuveDto> epreuves;
+    
+    // pour lier un participant à un utilisateur avec un/des role(s)
+    @JsonIgnore
+    private User user; 
+    
+    @JsonIgnore
+    private String password;
+    
+    @JsonIgnore
+    private String confirmPassword;
 }

@@ -18,11 +18,13 @@ public class EpreuveController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<EpreuveDto> getAllEpreuves() {
         return epreuveService.findAllEpreuves();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public EpreuveDto getEpreuveById(@PathVariable("id") Long epreuveId) {
         return epreuveService.findEpreuveById(epreuveId);
     }
@@ -53,12 +55,14 @@ public class EpreuveController {
         epreuveService.deleteEpreuve(epreuveId);
     }
 
-    @PostMapping("/{participantId}/inscrire/{epreuveId}")
+    @PutMapping("/{participantId}/inscrire/{epreuveId}")
+    @ResponseStatus(HttpStatus.OK)
     public EpreuveDto inscrireParticipant(@PathVariable Long participantId, @PathVariable Long epreuveId) {
         return epreuveService.inscrireParticipant(epreuveId, participantId);
     }
 
     @DeleteMapping("/{participantId}/desinscrire/{epreuveId}")
+    @ResponseStatus(HttpStatus.OK)
     public void desinscrireParticipant(@PathVariable Long participantId, @PathVariable Long epreuveId) {
         epreuveService.desinscrireParticipant(epreuveId, participantId);
     }

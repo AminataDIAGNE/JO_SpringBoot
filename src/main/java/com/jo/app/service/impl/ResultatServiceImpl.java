@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import com.jo.app.dto.EpreuveDto;
 import com.jo.app.dto.ParticipantDto;
-import com.jo.app.entity.Epreuve;
-import com.jo.app.entity.Participant;
 import com.jo.app.service.EpreuveService;
 import com.jo.app.service.ParticipantService;
 import org.springframework.stereotype.Service;

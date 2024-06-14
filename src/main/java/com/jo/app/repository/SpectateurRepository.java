@@ -6,4 +6,5 @@ import com.jo.app.entity.Spectateur;
 
 public interface SpectateurRepository extends JpaRepository<Spectateur, Long>{
 
+	Spectateur findByEmail(String email);
 }

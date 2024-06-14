@@ -2,6 +2,7 @@ package com.jo.app.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,9 @@ public class Delegation {
     private int nombreMedaillesArgent;
      
     private int nombreMedaillesBronze;
-    
+
+
     @OneToMany(mappedBy = "delegation", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Participant> participants;
 }

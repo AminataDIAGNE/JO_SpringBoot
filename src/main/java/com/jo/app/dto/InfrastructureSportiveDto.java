@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 @Data
@@ -21,8 +22,6 @@ public class InfrastructureSportiveDto {
     private String adresse;
     
     private int capacite;
-
-    @JsonIgnore
     @JsonIgnoreProperties("infrastructureSportiveDto")
     private List<EpreuveDto> epreuves;
 }

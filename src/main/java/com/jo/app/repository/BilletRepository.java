@@ -20,6 +20,8 @@ public interface BilletRepository extends JpaRepository<Billet, Long>{
     List<Billet> findAllByEpreuveAndSpectateur(Epreuve epreuve, Spectateur spectateur);
     
     List<Billet> findAllByEpreuve(Epreuve epreuve);
+    
+    List<Billet> findAllBySpectateur(Spectateur spectateur);
 
     /**
      * Compte le nombre de billets achetés par un spectateur pour une épreuve donnée.

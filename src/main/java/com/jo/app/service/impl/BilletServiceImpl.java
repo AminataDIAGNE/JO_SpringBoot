@@ -1,6 +1,6 @@
 package com.jo.app.service.impl;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -9,8 +9,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.jo.app.dto.BilletDto;
+import com.jo.app.dto.EpreuveDto;
+import com.jo.app.dto.SpectateurDto;
 import com.jo.app.entity.Billet;
 import com.jo.app.mapper.BilletMapper;
+import com.jo.app.mapper.EpreuveMapper;
+import com.jo.app.mapper.SpectateurMapper;
 import com.jo.app.repository.BilletRepository;
 import com.jo.app.service.BilletService;
 import com.jo.app.util.Etat;
@@ -34,7 +38,7 @@ public class BilletServiceImpl implements BilletService{
 	}
 
 	@Override
-	public void createBillet(BilletDto billetDto) {
+	public BilletDto createBillet(BilletDto billetDto) {
 	    Billet billet = BilletMapper.mapToBillet(billetDto);
 	    final int MAX_TICKETS_PER_SPECTATOR = 4;
 	    
@@ -55,9 +59,9 @@ public class BilletServiceImpl implements BilletService{
 	    			+ "dépasse la limite autorisée par spectateur (" + MAX_TICKETS_PER_SPECTATOR + ").");
 	    	
 	    } else {
-	    	billet.setEtat(Etat.VALIDE);
+	    	billet.setEtat(Etat.EN_ATTENTE);
 	    	billet.setPrixTotal(billet.getEpreuve().getPrixUnitaireBillet()* billet.getQuantite());
-	        billetRepository.save(billet);
+	    	return BilletMapper.mapToBilletDto(billetRepository.save(billet));
 	    }
 	}
 
@@ -96,29 +100,15 @@ public class BilletServiceImpl implements BilletService{
 
 	@Override
 	public void achat(BilletDto billetDto) {
-	    Billet billet = BilletMapper.mapToBillet(billetDto);
-	    final int MAX_TICKETS_PER_SPECTATOR = 4;
+		
+	    Billet billet =  BilletMapper.mapToBillet(createBillet(billetDto));
+	    // Gestion paiement en ligne (simulation de l'API paiement en ligne
 	    
-	    if (billet.getQuantite() <= 0 || billet.getQuantite() > MAX_TICKETS_PER_SPECTATOR) {
-	        throw new RuntimeException("Le nombre de billets qu'un spectateur peut acheter doit être compris entre 1 et 4 inclu");
-	    }
-	    int remainingTickets = getRemainingTicketsForEpreuve(billet);
-	    int purchasedTicketsBySpectator = getTicketsPurchasedBySpectatorForEpreuve(billet) - findBilletById(billetDto.getId()).getQuantite();
+	    // Ici tu recuperes les infos bancaires et tu fais appels à l'API de paiement en ligne
 	    
-	    int availableTickets = Math.max(0, MAX_TICKETS_PER_SPECTATOR - purchasedTicketsBySpectator);
-	    
-	    if (remainingTickets <= 0) {
-	        throw new RuntimeException("Impossible de mettre à jour le billet. Il n'y a plus de billets disponibles pour cet épreuve.");
-	        
-	    } else if (billet.getQuantite() > availableTickets) {
-	        throw new RuntimeException("Impossible de mettre à jour le billet. Le nombre de billets demandés (" + billet.getQuantite() + ") "
-	        		+ "dépasse la limite autorisée par spectateur (" + MAX_TICKETS_PER_SPECTATOR + ").");
-	        
-	    } else {
-	    	billet.setEtat(Etat.VALIDE);
-	    	billet.setPrixTotal(billet.getEpreuve().getPrixUnitaireBillet() * billet.getQuantite());
-	        billetRepository.save(billet);
-	    }
+	    // Information de paiement en ligne
+	    billet.setEtat(Etat.VALIDE);
+	    billetRepository.save(billet);
 	}
 
 	@Override
@@ -190,6 +180,27 @@ public class BilletServiceImpl implements BilletService{
 		billet.setQuantite(0);
 		Billet cancelledBillet = billetRepository.save(billet);
 		return BilletMapper.mapToBilletDto(cancelledBillet);
+	}
+
+	@Override
+	public List<BilletDto> findAllByEpreuveAndSpectateur(EpreuveDto epreuveDto, SpectateurDto spectateurDto) {
+		List<Billet> billets = billetRepository.findAllByEpreuveAndSpectateur(EpreuveMapper.mapToEpreuve(epreuveDto), SpectateurMapper.mapToSpectateur(spectateurDto));
+        return billets.stream().map(BilletMapper::mapToBilletDto)
+                .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<BilletDto> findAllByEpreuve(EpreuveDto epreuveDto) {
+		List<Billet> billets = billetRepository.findAllByEpreuve(EpreuveMapper.mapToEpreuve(epreuveDto));
+        return billets.stream().map(BilletMapper::mapToBilletDto)
+                .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<BilletDto> findAllBySpectateur(SpectateurDto spectateurDto) {
+		List<Billet> billets = billetRepository.findAllBySpectateur(SpectateurMapper.mapToSpectateur(spectateurDto));
+        return billets.stream().map(BilletMapper::mapToBilletDto)
+                .collect(Collectors.toList());
 	}
 
 }

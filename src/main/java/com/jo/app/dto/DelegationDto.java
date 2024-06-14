@@ -26,7 +26,6 @@ public class DelegationDto {
 	    
 	 private int nombreMedaillesBronze;
 
-	@JsonIgnore
 	 @JsonIgnoreProperties("delegationDto")
 	 private List<ParticipantDto> participants;
 }

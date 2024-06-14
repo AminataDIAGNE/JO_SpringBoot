@@ -37,16 +37,19 @@ public class ParticipantController {
 
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<ParticipantDto> getAllParticipants(){
         return participantService.findAllParticipants();
     }
 
     @GetMapping("/nom/{nom}")
+    @ResponseStatus(HttpStatus.OK)
     public List<ParticipantDto> getParticipantsByNom(@PathVariable String nom){
         return participantService.findAllParticipantsByNom(nom);
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ParticipantDto getParticipantById(@PathVariable Long id){
         return participantService.findParticipantById(id);
     }
@@ -84,31 +87,37 @@ public class ParticipantController {
     }
 
     @GetMapping("/delegation")
+    @ResponseStatus(HttpStatus.OK)
     public List<ParticipantDto> getParticipantsByNomAndDelegation(@RequestParam String nom, @RequestParam Long delegationId){
         return participantService.findParticipantsByNomAndDelegation(nom, delegationId);
     }
 
     @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
     public List<ParticipantDto> searchParticipantsByPartialNom(@RequestParam String partialNom){
         return participantService.findParticipantsByNomContaining(partialNom);
     }
 
     @GetMapping("/sorted")
+    @ResponseStatus(HttpStatus.OK)
     public List<ParticipantDto> getParticipantsOrderedByName(){
         return participantService.findAllParticipantsOrderedByName();
     }
 
     @GetMapping("/count")
+    @ResponseStatus(HttpStatus.OK)
     public long countParticipantsByDelegationId(@RequestParam Long delegationId){
         return participantService.countParticipantsByDelegationId(delegationId);
     }
 
     @GetMapping("/exists")
+    @ResponseStatus(HttpStatus.OK)
     public boolean existsParticipantByNom(@RequestParam String nom){
         return participantService.existsParticipantByNom(nom);
     }
 
     @GetMapping("/existsInDelegation")
+    @ResponseStatus(HttpStatus.OK)
     public boolean existsParticipantByNomAndDelegationId(@RequestParam String nom, @RequestParam Long delegationId){
         return participantService.existsParticipantByNomAndDelegationId(nom, delegationId);
     }

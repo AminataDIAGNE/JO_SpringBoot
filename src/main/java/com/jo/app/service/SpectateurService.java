@@ -15,5 +15,7 @@ public interface SpectateurService {
     void updateSpectateur(SpectateurDto spectateurDto);
 
     void deleteSpectateur(Long spectateurId);
+    
+    SpectateurDto findByEmail(String email);
 
 }

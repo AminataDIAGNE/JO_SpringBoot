@@ -1,6 +1,7 @@
 package com.jo.app.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jo.app.entity.Epreuve;
 import com.jo.app.entity.Spectateur;
@@ -31,4 +32,12 @@ public class BilletDto {
     // Champs supplémentaires pour les détails du remboursement
     private double montantRemboursement;
     private String messageConfirmation;
+    
+    // Champ creer pour l'appli web
+    @JsonIgnore
+    private Long idSpectateur;
+    
+    @JsonIgnore
+    private Long idEpreuve;
+
 }
