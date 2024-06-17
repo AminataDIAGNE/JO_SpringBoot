@@ -26,16 +26,21 @@ public class ParticipantServiceImpl implements ParticipantService{
 
 	private ParticipantRepository participantRepository;
 	private EpreuveService epreuveService;
-
-	//private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
 
 
-	public ParticipantServiceImpl(EpreuveService epreuveService ,ParticipantRepository participantRepository, UserRepository userRepository, RoleRepository roleRepository) {
+	public ParticipantServiceImpl(
+			ParticipantRepository participantRepository,
+			UserRepository userRepository,
+			RoleRepository roleRepository,
+			PasswordEncoder passwordEncoder,
+			EpreuveService epreuveService
+	) {
 		this.participantRepository = participantRepository;
-		this.epreuveService = epreuveService ;
-		//this.passwordEncoder = passwordEncoder;
+		this.epreuveService = epreuveService;
+		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 	}
@@ -60,7 +65,7 @@ public class ParticipantServiceImpl implements ParticipantService{
 		user.setName(participantDto.getPrenom() +" "+ participantDto.getNom());
 		user.setEmail(participantDto.getEmail());
 		user.setPassword(PasswordUtil.generatePassword());
-		//user.setPassword(passwordEncoder.encode(participantDto.getPassword()));
+		user.setPassword(passwordEncoder.encode(PasswordUtil.generatePassword()));
 
 		// Attribuer le rôle de spectateur
 		Role role = roleRepository.findByName("ROLE_PARTICIPANT");

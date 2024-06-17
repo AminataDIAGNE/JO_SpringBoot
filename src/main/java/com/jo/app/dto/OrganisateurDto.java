@@ -1,7 +1,7 @@
 package com.jo.app.dto;
 
 
-import com.jo.app.util.Role;
+import com.jo.app.util.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -22,5 +22,5 @@ public class OrganisateurDto {
     @Email
     private String email;
     
-    private Role role;
+    private Roles role;
 }

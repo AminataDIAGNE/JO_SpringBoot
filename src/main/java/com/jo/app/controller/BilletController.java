@@ -37,13 +37,13 @@ public class BilletController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createBillet(@RequestBody BilletDto billetDto) {
     	try {
-    		billetService.createBillet(billetDto);
+    		billetService.achat(billetDto);
 		} catch (RuntimeException e) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
 					"Impossible de créer ou de modifier le billet. Nombre de billets restants insuffisant ou limite de billets par spectateur atteinte (4 billets).",
 					e);
 		}
-        
+
     }
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -60,10 +60,10 @@ public class BilletController {
 
     @PutMapping("/reservation/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void reservationBillet(@PathVariable("id") Long billetId, @RequestBody BilletDto billetDto) {
+    public BilletDto reservationBillet(@PathVariable("id") Long billetId, @RequestBody BilletDto billetDto) {
         try {
         	billetDto.setId(billetId);
-            billetService.achat(billetDto);
+            return billetService.achat(billetDto);
 		} catch (RuntimeException e) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
 					"Impossible de modifier le billet. Nombre de billets restants insuffisant ou limite de billets par spectateur atteinte (4 billets).",
@@ -92,6 +92,12 @@ public class BilletController {
                     "Billet non valide.",
                     e);
         }
+    }
+
+    @GetMapping("/Stat")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BilletDto> vente() {
+            return billetService.venteStatistiques();
     }
 
     @DeleteMapping("/{id}")

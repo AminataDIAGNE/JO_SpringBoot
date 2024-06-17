@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{template}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Error</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <h1>
+            403 Page d'erreur
+        </h1>
+    </section>
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <div class="error-page">
+                <h2 class="headline text-yellow"> 403</h2>
+
+                <div class="error-content">
+                    <h3><i class="fa fa-warning text-yellow"></i> Oops! Page non autorisée.</h3>
+
+                    <p>
+                        Vous n'etes pas autoriser à visiter cette page.
+                        En attendant, vous pouvez <a th:href="@{/organisateur/epreuves}">retourner à la liste des épreuves</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+

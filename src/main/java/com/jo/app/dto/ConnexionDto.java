@@ -21,4 +21,6 @@ public class ConnexionDto {
 	
 	@NotEmpty(message="Le password est obligatoire")
 	private String password;
+
+	private String confirmPassword;
 }

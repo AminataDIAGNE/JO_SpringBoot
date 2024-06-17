@@ -24,7 +24,7 @@ public interface BilletService {
 
     /**
      * Crée un nouveau billet.
-     * 
+     *
      * @param billetDto Les informations du billet à créer.
      */
     BilletDto createBillet(BilletDto billetDto);
@@ -49,7 +49,7 @@ public interface BilletService {
      *
      * @param billetDto Les nouvelles informations du billet.
      */
-    void achat(BilletDto billetDto);
+    BilletDto achat(BilletDto billetDto);
 
     /**
      * Met à jour un billet existant lors du controlle.
@@ -97,4 +97,12 @@ public interface BilletService {
      */
     BilletDto cancelBillet(Long billetId);
 
+    /**
+     * Remonte l'ensemble des billets vendus
+     *
+     * @return Les informations du billet Valide.
+     * @throws RuntimeException Si le billet avec l'identifiant spécifié n'est pas trouvé.
+     */
+
+    List<BilletDto> venteStatistiques();
 }

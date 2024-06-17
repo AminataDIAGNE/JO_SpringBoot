@@ -3,9 +3,12 @@ package com.jo.app.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.jo.app.entity.Epreuve;
+import com.jo.app.repository.EpreuveRepository;
 import org.springframework.stereotype.Service;
 
 import com.jo.app.dto.BilletDto;
@@ -25,6 +28,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class BilletServiceImpl implements BilletService{
 
 	private BilletRepository billetRepository;
+	private EpreuveRepository epreuveRepository;
 
     public BilletServiceImpl(BilletRepository billetRepository) {
         this.billetRepository = billetRepository;
@@ -41,23 +45,23 @@ public class BilletServiceImpl implements BilletService{
 	public BilletDto createBillet(BilletDto billetDto) {
 	    Billet billet = BilletMapper.mapToBillet(billetDto);
 	    final int MAX_TICKETS_PER_SPECTATOR = 4;
-	    
+
 	    if (billet.getQuantite() <= 0 || billet.getQuantite() > MAX_TICKETS_PER_SPECTATOR) {
 	        throw new IllegalStateException("Le nombre de billets qu'un spectateur peut acheter doit être compris entre 1 et 4 compris");
 	    }
-	    
+
 	    int remainingTickets = getRemainingTicketsForEpreuve(billet);
 	    int purchasedTicketsBySpectator = getTicketsPurchasedBySpectatorForEpreuve(billet);
-	    
+
 	    int availableTickets = Math.max(0, MAX_TICKETS_PER_SPECTATOR - purchasedTicketsBySpectator);
-	    
+
 	    if (remainingTickets <= 0) {
 	        throw new IllegalStateException("Impossible de créer le billet. Il n'y a plus de billets disponibles pour cet épreuve.");
-	        
+
 	    } else if (billet.getQuantite() > availableTickets) {
 	    	throw new IllegalStateException("Impossible de créer le billet. Le nombre de billets demandés (" + billet.getQuantite() + ") "
 	    			+ "dépasse la limite autorisée par spectateur (" + MAX_TICKETS_PER_SPECTATOR + ").");
-	    	
+
 	    } else {
 	    	billet.setEtat(Etat.EN_ATTENTE);
 	    	billet.setPrixTotal(billet.getEpreuve().getPrixUnitaireBillet()* billet.getQuantite());
@@ -99,16 +103,34 @@ public class BilletServiceImpl implements BilletService{
 	}
 
 	@Override
-	public void achat(BilletDto billetDto) {
+	public BilletDto achat(BilletDto billetDto) {
 		
 	    Billet billet =  BilletMapper.mapToBillet(createBillet(billetDto));
-	    // Gestion paiement en ligne (simulation de l'API paiement en ligne
-	    
-	    // Ici tu recuperes les infos bancaires et tu fais appels à l'API de paiement en ligne
-	    
-	    // Information de paiement en ligne
-	    billet.setEtat(Etat.VALIDE);
-	    billetRepository.save(billet);
+
+		final int MAX_TICKETS_PER_SPECTATOR = 4;
+
+		if (billet.getQuantite() <= 0 || billet.getQuantite() > MAX_TICKETS_PER_SPECTATOR) {
+			throw new IllegalStateException("Le nombre de billets qu'un spectateur peut acheter doit être compris entre 1 et 4 compris");
+		}
+
+		int remainingTickets = getRemainingTicketsForEpreuve(billet);
+		int purchasedTicketsBySpectator = getTicketsPurchasedBySpectatorForEpreuve(billet);
+
+		int availableTickets = Math.max(0, MAX_TICKETS_PER_SPECTATOR - purchasedTicketsBySpectator);
+
+		if (remainingTickets <= 0) {
+			throw new IllegalStateException("Impossible de créer le billet. Il n'y a plus de billets disponibles pour cet épreuve.");
+
+		} else if (billet.getQuantite() > availableTickets) {
+			throw new IllegalStateException("Impossible de créer le billet. Le nombre de billets demandés (" + billet.getQuantite() + ") "
+					+ "dépasse la limite autorisée par spectateur (" + MAX_TICKETS_PER_SPECTATOR + ").");
+
+		} else {
+			billet.setEtat(Etat.VALIDE);
+			billet.setPrixTotal(billet.getEpreuve().getPrixUnitaireBillet()* billet.getQuantite());
+			return BilletMapper.mapToBilletDto(billetRepository.save(billet));
+		}
+
 	}
 
 	@Override
@@ -117,7 +139,14 @@ public class BilletServiceImpl implements BilletService{
 
 		if (billetDto.getEtat() != Etat.VALIDE) {
 			throw new RuntimeException("Billet non valide");
-		} else {
+		}
+		// Date de l'épreuve dépassé
+		else if(ChronoUnit.DAYS.between(LocalDateTime.now() ,
+				billetDto.getEpreuve().getDate() ) == 0
+		){
+			throw new RuntimeException("Billet plus valide");
+		}
+		else {
 			billet.setEtat(Etat.INVALIDE);
 			billetRepository.save(billet);
 		}
@@ -149,7 +178,8 @@ public class BilletServiceImpl implements BilletService{
 	@Override
 	public BilletDto cancelBillet(Long billetId) {
 	    Billet billet = BilletMapper.mapToBillet(findBilletById(billetId));
-
+		Billet billetN = billetRepository.findById(billetId)
+				.orElseThrow(() -> new EntityNotFoundException("Billet non présente dans la BD [ id: " + billetId+" ]"));
 		//process de remboursement
 		// Vérifier les conditions de date pour l'annulation
 		LocalDateTime currentDate = LocalDateTime.now();
@@ -177,9 +207,24 @@ public class BilletServiceImpl implements BilletService{
 		billet.setMessageConfirmation(messageConfirmation);
 
 		billet.setEtat(Etat.ANNULE);
-		billet.setQuantite(0);
 		Billet cancelledBillet = billetRepository.save(billet);
 		return BilletMapper.mapToBilletDto(cancelledBillet);
+	}
+
+	//Todo à tester
+	@Override
+	public List<BilletDto> venteStatistiques() {
+		List<Billet> billets = billetRepository.findAll();
+		List<BilletDto> billetDtos = new ArrayList<>();
+
+		for (Billet billet : billets) {
+			BilletDto billetDto = BilletMapper.mapToBilletDto(billet);
+			if (billetDto.getEtat() == Etat.VALIDE) {
+				billetDtos.add(billetDto);
+			}
+		}
+
+		return billetDtos;
 	}
 
 	@Override
