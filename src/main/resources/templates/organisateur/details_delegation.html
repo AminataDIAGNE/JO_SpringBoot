@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" th:if="${acces.contains('ROLE_ORGANISATEUR')}">
                 <div class="col-xs-12">
                     <div class="box box-default">
                         <div class="box-header with-border">Ajouter Participant</div>

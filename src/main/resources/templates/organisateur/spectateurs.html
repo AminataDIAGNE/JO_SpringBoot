@@ -4,92 +4,183 @@
 	   layout:decorate="~{template}">
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Spectateurs</title>
+		<title>Informations Spectateur</title>
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<!-- Main content -->
-			<section class="content">
-			  <div class="row">
-				<div class="col-xs-12">
-				  <div class="box col-xs-6"><br/>
-				  	<div class="row">
-						<div class="col-xs-12">
-							<div class="box box-default">
-								<div class="box-header with-border">
-									<h3 class="box-title">Tous les spectateurs</h3>
-								</div>
-							</div>
-						</div>
-					</div>
-			   		
-					 <!--Modal Formulaire de Suppression 
-					<div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class="modal-content">
-						  <div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Confirmation Suppression</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							  <span aria-hidden="true">&times;</span>
-							</button>
-						  </div>
-						  <div class="modal-body">
-							  <h3><p class="alert alert-default" style="color: red;">Voulez-vous vraiment supprimer cette délégation ?</p></h3>
-						  </div>
-						  <div class="modal-footer">
-							<button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Non</button>
-							<a href="" class="btn btn-success" id="delete">Oui</a>
-						  </div>
-						</div>
-					  </div>
-					</div>
-				-->
-				<div class="box-body">
-					<table id="example2" class="table table-bordered table-hover">
-						<thead>
-							<tr>
-								<th>Nom</th>
-								<th>Prénom</th>
-                                <th>Email</th>
-								<th>Password</th>
-								<th>Details</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="s:${spectateurs}">
-                                <td th:text="${s.nom}"></td>
-                                <td th:text="${s.prenom}"></td>
-                                <td th:text="${s.email}"></td>
-								<td>
-									<span th:if="${s.user != null}">
-										<span th:text="${s.user.password}"></span>
-									</span>
-								</td>
-								<td>
-									<a th:href="@{/organisateur/spectateurs(id=${s.id})}"><i class="fa fa-fw fa-eye"></i></a>
-								</td>
-								<!--
-						  		<td>
-							  		<a th:href="@{/organisateur/spectateurs/delete(id=${p.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
-						  		</td>
-							-->
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<th>Nom</th>
-								<th>Prénom</th>
-                                <th>Email</th>
-								<th>Password</th>
-								<th>Details</th>
-							</tr>
-						</tfoot>
-					  </table>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			</section>
-		</div>
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box box-primary">
+                            <div class="box-body box-profile">
+                              <img class="profile-user-img img-responsive img-circle" src="assets/dist/img/user1-128x128.jpg" alt="User profile picture">
+                
+                              <h3 class="profile-username text-center" th:text="${spectateur.nom + ' ' + spectateur.prenom}"></h3>
+                
+                              <p class="text-muted text-center">Spectateur</p>
+                
+                              <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Nom</b> <a class="pull-right" th:text="${spectateur.nom}"></a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b>Prénom</b> <a class="pull-right" th:text="${spectateur.prenom}"></a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b>Email</b> <a class="pull-right" th:text="${spectateur.email}"></a>
+                                </li>
+                              </ul>
+                              <!--<a th:href="@{/organisateur/spectateurs/delete(id=${participant.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="del btn btn-danger btn-block"><b>Dasctiver Compte</b></a>-->
+                            </div>
+                        </div>
+                    </div>
+                     <!--Modal Formulaire de Suppression -->
+					          <div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Confirmation Suppression</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <h3><p class="alert alert-default" style="color: red;">Voulez-vous vraiment desactiver ton compte ?</p></h3>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Non</button>
+                              <a href="" class="btn btn-success" id="delete">Oui</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+								<li class="active"><a href="#valider" data-toggle="tab">Billets à valider</a></li>
+                              	<li><a href="#activity" data-toggle="tab">Billets achetés</a></li>
+							 	<li><a href="#historiques" data-toggle="tab">Historique</a></li>
+                              	<li><a href="#settings" data-toggle="tab">Profil</a></li>
+                            </ul>
+                            <div class="tab-content">
+								<div class="active tab-pane" id="valider">
+									<div class="box-body">
+										<table id="avalider" class="table table-hover">
+											<thead>
+												<tr>
+													<th>Epreuve</th>
+													<th>Date</th>
+													<th>Etat</th>
+													<th>Prix</th>
+													<th>Quantité</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="aval:${billetsAValider}">
+													<td th:text="${aval.epreuve.nom}"></td>
+													<td th:text="${aval.epreuve.date}"></td>
+													<td th:text="${aval.etat}"></td>
+													<td th:text="${aval.prixTotal}"></td>
+													<td th:text="${aval.quantite}"></td>
+													<td>
+														<a class="btn btn-success" th:href="@{/organisateur/billets/paiement(id=${aval.id})}" th:if="${aval.etat != 'EN_ATTENTE'}">
+															<i class="fa fa-credit-card"></i> Passer au paiement
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+							  </div>
+                              <div class="tab-pane" id="activity">
+                                <div class="box-body">
+                                    <table id="aVenir" class="table table-hover">
+                                        <thead>
+                                            <tr>
+												<th>Epreuve</th>
+                                                <th>Date</th>
+                                                <th>Prix</th>
+                                                <th>Quantité</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="bav:${billetsAVenir}">
+												<td th:text="${bav.epreuve.nom}"></td>
+												<td th:text="${bav.epreuve.date}"></td>
+												<td th:text="${bav.prixTotal}"></td>
+												<td th:text="${bav.quantite}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane" id="historiques"> 
+								<div class="box-body">
+                                    <table id="historique" class="table table-hover">
+                                        <thead>
+                                            <tr>
+												<th>Epreuve</th>
+                                                <th>Date</th>
+												<th>Quantité</th>
+                                                <th>Prix</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="bp:${billetsPasses}"> 
+												<td th:text="${bp.epreuve.nom}"></td>
+												<td th:text="${bp.epreuve.date}"></td>
+												<td th:text="${bp.quantite}"></td>
+												<td th:text="${bp.prixTotal}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+							  </div>
+                              <div class="tab-pane" id="settings">
+                                <form class="form-horizontal">
+                                    
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Identifiant</label>
+                            
+                                        <div class="col-sm-10">
+                                            <input type="text" name="id" readonly="readonly" id="id" class="form-control" placeholder="nom" th:value="${spectateur.id}"/>
+                                        </div>
+                                      </div>
+                                  <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Nom</label>
+                        
+                                    <div class="col-sm-10">
+                                      <input type="text" name="nom" required = "required" id="nom" class="form-control" placeholder="nom" th:value="${spectateur.nom}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Prénom</label>
+                        
+                                    <div class="col-sm-10">
+                                        <input type="text" name="prenom" required = "required" id="prenom" class="form-control" placeholder="Prénom" th:value="${spectateur.prenom}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                        
+                                    <div class="col-sm-10">
+                                      <input type="email" name="email" class="form-control" id="email" placeholder="Email" th:value="${spectateur.email}"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 	</body>
 </html>

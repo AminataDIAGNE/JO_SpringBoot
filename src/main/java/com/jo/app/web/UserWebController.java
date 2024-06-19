@@ -4,6 +4,8 @@ import com.jo.app.dto.RegistrationDto;
 import com.jo.app.entity.User;
 import com.jo.app.service.RoleService;
 import com.jo.app.service.UserService;
+import com.jo.app.util.SecurityUtils;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,11 @@ public class UserWebController {
     
     @GetMapping("/users")
     public String findAll(Model model) {
+    	org.springframework.security.core.userdetails.User user = SecurityUtils.getCurrentUser();
     	model.addAttribute("users",  userService.findAllUsers());
     	model.addAttribute("roles",  roleService.findAllRoles());
+    	model.addAttribute("acces", SecurityUtils.getRoles());
+    	model.addAttribute("username", user.getUsername());
     	return "organisateur/user";
     }
 

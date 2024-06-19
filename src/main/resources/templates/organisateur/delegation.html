@@ -19,7 +19,7 @@
 								<div class="box-header with-border">
 									<h3 class="box-title">Liste des délégations</h3>
 								</div>
-							  	<div class="box-body">
+							  	<div class="box-body" th:if="${acces.contains('ROLE_ORGANISATEUR')}">
 									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
 								   		<i class="fa fa-fw fa-plus"></i> Créer une délégation
 								  	</button>
@@ -172,7 +172,7 @@
 									<a th:href="@{/organisateur/delegations/details(id=${d.id})}"><i class="fa fa-fw fa-eye"></i></a>
 								</td>
 						  		<td>
-							  		<a th:href="@{/organisateur/delegations/delete(id=${d.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+							  		<a th:if="${acces.contains('ROLE_ORGANISATEUR')}" th:href="@{/organisateur/delegations/delete(id=${d.id})}" class="btn btn-danger del"><i class="fa fa-fw fa-trash"></i>supprimer</a>
 						  		</td>
                                 
 							</tr>

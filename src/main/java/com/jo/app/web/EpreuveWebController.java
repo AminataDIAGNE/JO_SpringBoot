@@ -5,7 +5,13 @@ import com.jo.app.entity.InfrastructureSportive;
 import com.jo.app.mapper.InfrastructureSportiveMapper;
 import com.jo.app.service.EpreuveService;
 import com.jo.app.service.InfrastructureSportiveService;
+import com.jo.app.util.SecurityUtils;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,36 +30,52 @@ public class EpreuveWebController {
 
     @GetMapping("/epreuves")
     public String AllEpreuves(Model model) {
-    	model.addAttribute("epreuves", epreuveService.findAllEpreuves());
-    	model.addAttribute("infraSportives", infrastructureSportiveService.findAllInfrastructureSportives());
-    	return "organisateur/epreuve";
+        User user = SecurityUtils.getCurrentUser();
+        List<String> acces = SecurityUtils.getRoles();
+        if(acces.contains("ROLE_PARTICIPANT") || acces.contains("ROLE_CONTROLEUR") || acces.contains("ROLE_SPECTATEUR")) {
+            LocalDateTime now = LocalDateTime.now();
+            List<EpreuveDto> epreuvesAParticiper = epreuveService.findAllEpreuves().stream()
+                    .filter(epreuve -> epreuve.getDate().isAfter(now))
+                    .collect(Collectors.toList());
+            model.addAttribute("epreuves", epreuvesAParticiper);
+
+        }else{
+            model.addAttribute("epreuves", epreuveService.findAllEpreuves());
+
+        }
+
+
+        model.addAttribute("infraSportives", infrastructureSportiveService.findAllInfrastructureSportives());
+        model.addAttribute("acces", SecurityUtils.getRoles());
+        model.addAttribute("username", user.getUsername());
+        return "organisateur/epreuve";
     }
 
     @PostMapping("/epreuves/new")
     public String save(EpreuveDto epreuveDto)
     {
-    	InfrastructureSportive infra = InfrastructureSportiveMapper.mapToInfrastructureSportive(infrastructureSportiveService.findInfrastructureSportiveById(epreuveDto.getIdInfrasSportive()));
-    	epreuveDto.setInfrastructureSportive(infra);
-    	epreuveService.createEpreuve(epreuveDto);
+        InfrastructureSportive infra = InfrastructureSportiveMapper.mapToInfrastructureSportive(infrastructureSportiveService.findInfrastructureSportiveById(epreuveDto.getIdInfrasSportive()));
+        epreuveDto.setInfrastructureSportive(infra);
+        epreuveService.createEpreuve(epreuveDto);
         return "redirect:/organisateur/epreuves";
     }
-    
+
     @PostMapping("/epreuves/edit")
     public String update(EpreuveDto epreuveDto)
     {
-    	InfrastructureSportive infra = InfrastructureSportiveMapper.mapToInfrastructureSportive(infrastructureSportiveService.findInfrastructureSportiveById(epreuveDto.getIdInfrasSportive()));
-    	epreuveDto.setInfrastructureSportive(infra);
-    	epreuveService.updateEpreuve(epreuveDto);
+        InfrastructureSportive infra = InfrastructureSportiveMapper.mapToInfrastructureSportive(infrastructureSportiveService.findInfrastructureSportiveById(epreuveDto.getIdInfrasSportive()));
+        epreuveDto.setInfrastructureSportive(infra);
+        epreuveService.updateEpreuve(epreuveDto);
         return "redirect:/organisateur/epreuves";
     }
-    
+
     @GetMapping(value="/epreuves/delete")
     public String delete(Long id)
     {
-    	epreuveService.deleteEpreuve(id);
+        epreuveService.deleteEpreuve(id);
         return "redirect:/organisateur/epreuves";
     }
-    
+
     @GetMapping("/epreuves/findOne")
     @ResponseBody
     public Object[] findOne(Long id) {
@@ -63,7 +85,7 @@ public class EpreuveWebController {
         objects[1] = epreuveDto.getInfrastructureSportive();
         return objects;
     }
-    
+
 
     @GetMapping("/epreuves/getOne")
     @ResponseBody
@@ -71,13 +93,25 @@ public class EpreuveWebController {
     {
         return epreuveService.findEpreuveById(id);
     }
-    
+
     @GetMapping("/epreuves/details")
     public String detailscategories(Model model, Long id){
+        User user = SecurityUtils.getCurrentUser();
         EpreuveDto epreuveDto = epreuveService.findEpreuveById(id);
         model.addAttribute("epreuve",epreuveDto);
         model.addAttribute("billets", epreuveDto.getBillets());
         model.addAttribute("resultats", epreuveDto.getResultats());
+        model.addAttribute("acces", SecurityUtils.getRoles());
+        model.addAttribute("username", user.getUsername());
         return "organisateur/details_epreuve";
     }
+
+    @GetMapping("/epreuves/error")
+    public String redirectError(Model model) {
+        User user = SecurityUtils.getCurrentUser();
+        model.addAttribute("acces", SecurityUtils.getRoles());
+        model.addAttribute("username", user.getUsername());
+        return "error";
+    }
+
 }

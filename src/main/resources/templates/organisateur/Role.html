@@ -129,10 +129,10 @@
 							<tr th:each="r:${roles}">
 						  		<td th:text="${r.name}"></td>
 								<td>
-									<a th:href="@{/organisateur/roles/findOne(id=${r.id})}" class="editRole"><i class="fa fa-fw fa-edit"></i></a>
+									<a th:href="@{/organisateur/roles/findOne(id=${r.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="editRole"><i class="fa fa-fw fa-edit"></i></a>
 								</td> 
 						  		<td>
-							  		<a th:href="@{/organisateur/roles/delete(id=${r.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+							  		<a th:href="@{/organisateur/roles/delete(id=${r.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
 						  		</td>
 							</tr>
 						</tbody>

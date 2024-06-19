@@ -185,7 +185,7 @@
 						<tbody>
 							<tr th:each="u:${users}">
 								<td>
-									<a th:href="@{/organisateur/users/findOne(id=${u.id})}" class="editUser"><i class="fa fa-fw fa-edit"></i></a>
+									<a th:href="@{/organisateur/users/findOne(id=${u.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="editUser"><i class="fa fa-fw fa-edit"></i></a>
 								</td>
 						  		<td th:text="${u.name}"></td>
                                 <td th:text="${u.email}"></td>
@@ -199,7 +199,7 @@
 									</span>
 								</td>
 						  		<td>
-							  		<a th:href="@{/organisateur/users/delete(id=${u.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+							  		<a th:href="@{/organisateur/users/delete(id=${u.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
 						  		</td>
                                 
 							</tr>

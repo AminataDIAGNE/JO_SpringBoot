@@ -27,7 +27,7 @@
                                   <b>Délégation</b> <a class="pull-right" th:text="${participant.delegation.nom}"></a>
                                 </li>
                               </ul>
-                              <a th:href="@{/organisateur/participants/delete(id=${participant.id})}" class="del btn btn-danger btn-block"><b>Supprimer</b></a>
+                              <a th:href="@{/organisateur/participants/delete(id=${participant.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="del btn btn-danger btn-block"><b>Supprimer</b></a>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                                 <div class="tab-pane" id="timeline"> </div>
                               -->
                               <div class="tab-pane" id="settings">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" th:action="@{/organisateur/participants/modifier}" method="post" name="formSave">
                                     
                                     <div class="form-group">
                                         <label for="inputName" class="col-sm-2 control-label">Identifiant</label>
@@ -116,6 +116,7 @@
                                       <input type="email" name="email" class="form-control" id="email" placeholder="Email" th:value="${participant.email}"/>
                                     </div>
                                   </div>
+                                  <input type="hidden" name="idDelegation" id="idDelegation" th:value="${participant.delegation.id}"/>
                                   <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                       <button type="submit" class="btn btn-primary">Submit</button>

@@ -62,10 +62,10 @@
                                 <td th:text="${p.prenom}"></td>
                                 <td th:text="${p.email}"></td>
 								<td>
-									<a th:href="@{/organisateur/participants(id=${p.id})}"><i class="fa fa-fw fa-eye"></i></a>
+									<a th:href="@{/organisateur/participants(id=${p.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}"><i class="fa fa-fw fa-eye"></i></a>
 								</td>
 						  		<td>
-							  		<a th:href="@{/organisateur/all-participants/delete(id=${p.id})}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
+							  		<a th:href="@{/organisateur/all-participants/delete(id=${p.id})}" th:if="${acces.contains('ROLE_ORGANISATEUR')}" class="del"><i style="color: red;" class="fa fa-fw fa-trash"></i></a>
 						  		</td>
                                 
 							</tr>

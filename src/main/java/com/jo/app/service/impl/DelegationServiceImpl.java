@@ -31,13 +31,13 @@ public class DelegationServiceImpl implements DelegationService{
 
 	@Override
 	public void createDelegation(DelegationDto delegationDto) {
-		Delegation existingDelegation = delegationRepository.findByNom(delegationDto.getNom()).get();
+		Delegation existingDelegation = delegationRepository.findByNom(delegationDto.getNom());
 		if (existingDelegation != null) {
 			throw new RuntimeException("delegation exist.");
 		}
 		Delegation delegation = DelegationMapper.mapToDelegation(delegationDto);
 		delegationRepository.save(delegation);
-		
+
 	}
 
 	@Override

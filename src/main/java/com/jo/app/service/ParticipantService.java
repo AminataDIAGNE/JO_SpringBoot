@@ -20,6 +20,13 @@ public interface ParticipantService {
      * @return Une liste contenant les participants ayant le nom spécifié.
      */
     List<ParticipantDto> findAllParticipantsByNom(String nom);
+    
+    /**
+     * Recherche et retourne le participant ayant le mail spécifié.
+     * @param email
+     * @return le participant ayant le mail spécifié
+     */
+    ParticipantDto findParticipantByEmail(String email);
 
     /**
      * Créer un nouveau participant.

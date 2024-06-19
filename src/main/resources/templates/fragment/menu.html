@@ -7,7 +7,7 @@
           <img src="assets/dist/img/avatar.png" class="img-circle" alt="User Connected"/>
         </div>
         <div class="pull-left info">
-		    <p>ORGANISATEUR</p> 
+		    <p th:text="${acces[0].toUpperCase().split('_')[1]}"></p> 
           <!-- <p th:text="${compte.agents.profil}">ORGANISATEUR</p> -->
           <!-- <a href="#" ><i class="fa fa-circle text-success"></i> <span th:text="${compte.login}"></span></a> -->
         </div>
@@ -27,17 +27,17 @@
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
           <a href="#">
-              <i class="fa fa-dashboard"></i>
-              <span>Acceuil</span>
+              <i class="fa fa-fw fa-user"></i>
+              <span th:text="${username}"></span>
           </a>
         </li>
-        <li class="active">
+        <li class="active" th:if="${acces.contains('ROLE_PARTICIPANT')} or ${acces.contains('ROLE_ORGANISATEUR')}">
           <a href="/organisateur/delegations">
             <i class="fa fa-money"></i>
             <span>Délégations</span>
           </a>
         </li>
-        <li class="active">
+        <li class="active" th:if="${acces.contains('ROLE_ORGANISATEUR')}">
           <a href="/organisateur/all-participants">
             <i class="fa fa-user"></i>
             <span>Participant</span>
@@ -45,23 +45,23 @@
         </li>
         <li class="active">
           <a href="/organisateur/epreuves">
-            <i class="fa fa-clipboard"></i>
+            <i class="fa fa-fw fa-trophy"></i>
             <span>Epreuves</span>
           </a>
         </li>
-        <li class="active">
-          <a href="/organisateur/spectateurs">
-            <i class="fa fa-user"></i>
-            <span>Spectateur</span>
-          </a>
-        </li>
-        <li class="active">
+        <li class="active" th:if="${acces.contains('ROLE_SPECTATEUR')} or ${acces.contains('ROLE_ORGANISATEUR')} or ${acces.contains('ROLE_CONTROLEUR')}">
           <a href="/organisateur/billets">
             <i class="fa fa-clipboard"></i>
             <span>Billets</span>
           </a>
         </li>
-        <li class="treeview">
+		<li class="active" th:if="${acces.contains('ROLE_SPECTATEUR')}">
+          <a href="/organisateur/spectateurs">
+            <i class="fa fa-user"></i>
+            <span>Profil</span>
+          </a>
+        </li>
+        <li class="treeview" th:if="${acces.contains('ROLE_ORGANISATEUR')}">
           <a href="#">
             <i class="fa fa-pie-chart"></i>
             <span>Parametrages</span>

@@ -16,11 +16,11 @@ import com.jo.app.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
-
+	
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
 	private PasswordEncoder passwordEncoder;
-
+	
 	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
@@ -34,33 +34,33 @@ public class UserServiceImpl implements UserService{
 		User user = new User();
 		user.setName(registrationDto.getPrenom()+" "+registrationDto.getNom());
 		user.setEmail(registrationDto.getEmail());
-
-		//Utilisons spring security pour crypter le password
+		
+		//Utilisons spring security pour crypter le password 
 		user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
-
+		
 		List<Role> roles = new ArrayList<Role>();
-		for (Role role : registrationDto.getRoles()) {
-			roles.add(roleRepository.findById(role.getId()).orElse(null));
-		}
-		user.setRoles(roles);
-
+        for (Role role : registrationDto.getRoles()) {
+            roles.add(roleRepository.findById(role.getId()).orElse(null));
+        }
+        user.setRoles(roles);
+		
 		userRepository.save(user);
-
+		
 	}
-
-
+	
+	
 	@Override
 	public void saveSpectateur(RegistrationDto registrationDto) {
-
+		
 		User user = new User();
 		user.setName(registrationDto.getPrenom()+" "+registrationDto.getNom());
 		user.setEmail(registrationDto.getEmail());
-		//Utilisons spring security pour crypter le password
+		//Utilisons spring security pour crypter le password 
 		user.setPassword(registrationDto.getPassword());
-
+		
 		Role role = roleRepository.findByName("SPECTATEUR");
-		user.setRoles(Arrays.asList(role));
-
+        user.setRoles(Arrays.asList(role));
+		
 		userRepository.save(user);
 	}
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User findById(Long id) {
-
+		
 		return userRepository.findById(id).get();
 	}
 

@@ -312,4 +312,9 @@ public class BilletServiceImpl implements BilletService{
                 .collect(Collectors.toList());
 	}
 
+	@Override
+	public void updateEtat(BilletDto billetDto) {
+		billetRepository.save(BilletMapper.mapToBillet(billetDto));
+	}
+
 }

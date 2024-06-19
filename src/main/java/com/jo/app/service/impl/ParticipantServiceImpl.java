@@ -61,25 +61,24 @@ public class ParticipantServiceImpl implements ParticipantService{
 			throw new RuntimeException("participant avec ce mail exist.");
 		}
 		// Créer un nouvel utilisateur
-		User user = new User();
-		user.setName(participantDto.getPrenom() +" "+ participantDto.getNom());
-		user.setEmail(participantDto.getEmail());
-		user.setPassword(PasswordUtil.generatePassword());
-		user.setPassword(passwordEncoder.encode(PasswordUtil.generatePassword()));
-
-		// Attribuer le rôle de spectateur
-		Role role = roleRepository.findByName("ROLE_PARTICIPANT");
-		user.setRoles(Arrays.asList(role));
-
-		// Enregistrer l'utilisateur
-		userRepository.save(user);
-
-		// Associer l'utilisateur au participant
-		participantDto.setUser(user);
+        User user = new User();
+        user.setName(participantDto.getPrenom() +" "+ participantDto.getNom());
+        user.setEmail(participantDto.getEmail());
+        user.setPassword(passwordEncoder.encode(PasswordUtil.generatePassword()));
+        
+        // Attribuer le rôle de spectateur
+        Role role = roleRepository.findByName("ROLE_PARTICIPANT");
+        user.setRoles(Arrays.asList(role));
+        
+        // Enregistrer l'utilisateur
+        userRepository.save(user);
+        
+        // Associer l'utilisateur au participant
+        participantDto.setUser(user);
 
 		Participant participant = ParticipantMapper.mapToParticipant(participantDto);
 		participantRepository.save(participant);
-
+		
 	}
 
 	@Override
@@ -113,33 +112,33 @@ public class ParticipantServiceImpl implements ParticipantService{
 	@Override
 	public List<ParticipantDto> findAllParticipantsByNom(String nom) {
 		List<Participant> participants = participantRepository.findParticipantsByNom(nom);
-		return participants.stream()
-				.map(ParticipantMapper::mapToParticipantDto)
-				.collect(Collectors.toList());
+        return participants.stream()
+                .map(ParticipantMapper::mapToParticipantDto)
+                .collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ParticipantDto> findParticipantsByNomAndDelegation(String nom, Long delegationId) {
 		List<Participant> participants = participantRepository.findParticipantsByNomAndDelegation(nom, delegationId);
-		return participants.stream()
-				.map(ParticipantMapper::mapToParticipantDto)
-				.collect(Collectors.toList());
+        return participants.stream()
+                .map(ParticipantMapper::mapToParticipantDto)
+                .collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ParticipantDto> findParticipantsByNomContaining(String partialNom) {
 		List<Participant> participants = participantRepository.findParticipantsByNomContaining(partialNom);
-		return participants.stream()
-				.map(ParticipantMapper::mapToParticipantDto)
-				.collect(Collectors.toList());
+        return participants.stream()
+                .map(ParticipantMapper::mapToParticipantDto)
+                .collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ParticipantDto> findAllParticipantsOrderedByName() {
-		List<Participant> participants = participantRepository.findAllByOrderByNom();
-		return participants.stream()
-				.map(ParticipantMapper::mapToParticipantDto)
-				.collect(Collectors.toList());
+		 List<Participant> participants = participantRepository.findAllByOrderByNom();
+	        return participants.stream()
+	                .map(ParticipantMapper::mapToParticipantDto)
+	                .collect(Collectors.toList());
 	}
 
 	@Override
@@ -155,6 +154,13 @@ public class ParticipantServiceImpl implements ParticipantService{
 	@Override
 	public boolean existsParticipantByNomAndDelegationId(String nom, Long delegationId) {
 		return participantRepository.existsByNomAndDelegationId(nom, delegationId);
+	}
+
+
+	@Override
+	public ParticipantDto findParticipantByEmail(String email) {
+		
+		return ParticipantMapper.mapToParticipantDto(participantRepository.findByEmail(email));
 	}
 
 }

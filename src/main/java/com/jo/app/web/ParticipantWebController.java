@@ -6,9 +6,11 @@ import com.jo.app.mapper.DelegationMapper;
 import com.jo.app.service.DelegationService;
 import com.jo.app.service.ParticipantService;
 import com.jo.app.service.ResultatService;
+import com.jo.app.util.SecurityUtils;
 
 import java.util.ArrayList;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,20 +33,25 @@ public class ParticipantWebController {
     
     @GetMapping("/all-participants")
     public String allParticipants(Model model) {
+    	User user = SecurityUtils.getCurrentUser();
     	model.addAttribute("participants",  participantService.findAllParticipants());
+    	model.addAttribute("acces", SecurityUtils.getRoles());
+    	model.addAttribute("username", user.getUsername());
     	return "organisateur/all_participant";
     }
 
     @GetMapping("/participants")
     public String allParticipants(Model model, Long id) {
     	ParticipantDto participantDto = participantService.findParticipantById(id);
+    	User user = SecurityUtils.getCurrentUser();
     	model.addAttribute("participant", participantDto);
     	if(participantDto != null) {
         	model.addAttribute("resultats", resultatervice.findResultatsByParticipant(participantDto.getId()));
     	}else {
         	model.addAttribute("resultats", new ArrayList<ResultatDto>());
     	}
-    	
+    	model.addAttribute("acces", SecurityUtils.getRoles());
+    	model.addAttribute("username", user.getUsername());
     	return "organisateur/participant";
     }
 
@@ -61,6 +68,14 @@ public class ParticipantWebController {
     {
     	participantService.updateParticipant(participantDto);
         return "redirect:/organisateur/participants";
+    }
+    
+    @PostMapping("/participants/modifier")
+    public String updateParticipant(ParticipantDto participantDto)
+    {
+    	participantDto.setDelegation(DelegationMapper.mapToDelegation(delegationService.findDelegationById(participantDto.getIdDelegation())));
+    	participantService.updateParticipant(participantDto);
+        return "redirect:/organisateur/participants?id="+participantDto.getId();
     }
     
     @GetMapping(value="/all-participants/delete")
@@ -103,6 +118,8 @@ public class ParticipantWebController {
         ParticipantDto participantDto = participantService.findParticipantById(id);
         model.addAttribute("participant",participantDto);
         model.addAttribute("participants", participantDto.getResultats());
+        model.addAttribute("acces", SecurityUtils.getRoles());
+        model.addAttribute("username", participantDto.getEmail());
         return "organisateur/details_participant";
     }
 }
