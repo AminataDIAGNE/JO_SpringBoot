@@ -6,6 +6,7 @@ import com.jo.app.service.BilletService;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,7 +38,7 @@ public class BilletController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createBillet(@RequestBody BilletDto billetDto) {
     	try {
-    		billetService.achat(billetDto);
+    		billetService.createBillet(billetDto);
 		} catch (RuntimeException e) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
 					"Impossible de créer ou de modifier le billet. Nombre de billets restants insuffisant ou limite de billets par spectateur atteinte (4 billets).",
@@ -58,19 +59,26 @@ public class BilletController {
         }
     }
 
-    @PutMapping("/reservation/{id}")
+    @PostMapping("/reservation")
     @ResponseStatus(HttpStatus.OK)
-    public BilletDto reservationBillet(@PathVariable("id") Long billetId, @RequestBody BilletDto billetDto) {
+    public BilletDto reservationBillet(@RequestParam("idSpectateur") Long idSpectateur, @RequestParam("idEpreuve") Long idEpreuve, @RequestParam("quantite") int quantite) {
         try {
-        	billetDto.setId(billetId);
-            return billetService.achat(billetDto);
-		} catch (RuntimeException e) {
-			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-					"Impossible de modifier le billet. Nombre de billets restants insuffisant ou limite de billets par spectateur atteinte (4 billets).",
-					e);
-		}
+            return billetService.reserverBillet(idSpectateur, idEpreuve, quantite);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Impossible de réserver le billet. Nombre de billets restants insuffisant ou limite de billets par spectateur atteinte (4 billets).",
+                    e);
+        }
     }
-    
+
+    @PostMapping("/confirmer-paiement")
+    public ResponseEntity<BilletDto> confirmerPaiement(@RequestParam Long billetId) {
+        BilletDto billetDto = billetService.confirmerPaiement(billetId);
+        return ResponseEntity.ok(billetDto);
+    }
+
+
+
     @PutMapping("/cancel/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void cancelBillet(@PathVariable("id") Long billetId) {
@@ -96,8 +104,14 @@ public class BilletController {
 
     @GetMapping("/Stat")
     @ResponseStatus(HttpStatus.OK)
-    public List<BilletDto> vente() {
+    public List<BilletDto> statistique() {
             return billetService.venteStatistiques();
+    }
+
+    @GetMapping("/Stat/{idEpreuve}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BilletDto> statistiqueParEpreuve(@PathVariable("id") Long epreuveId) {
+        return billetService.venteStatistiquesParEpreuve(epreuveId);
     }
 
     @DeleteMapping("/{id}")

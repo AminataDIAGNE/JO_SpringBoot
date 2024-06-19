@@ -2,6 +2,7 @@ package com.jo.app.repository;
 
 import java.util.List;
 
+import com.jo.app.util.Etat;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jo.app.entity.Billet;
@@ -39,8 +40,11 @@ public interface BilletRepository extends JpaRepository<Billet, Long>{
      * @return Le nombre de billets achetés par un spectateur pour l'événement associé au billet.
      */
     default int getTicketsPurchasedBySpectatorForEpreuve(Billet billet) {
-    	List<Billet> billets = findAllByEpreuveAndSpectateur(billet.getEpreuve(), billet.getSpectateur());
-        return billets.stream().mapToInt(Billet::getQuantite).sum();
+        List<Billet> billets = findAllByEpreuveAndSpectateur(billet.getEpreuve(), billet.getSpectateur());
+        return billets.stream()
+                .filter(b -> b.getEtat() == Etat.VALIDE)
+                .mapToInt(Billet::getQuantite)
+                .sum();
     }
 
     /**
@@ -51,7 +55,10 @@ public interface BilletRepository extends JpaRepository<Billet, Long>{
      */
     default int getRemainingTicketsForEpreuve(Billet billet) {
         int totalTickets = billet.getEpreuve().getNombrePlacesMisesEnVente();
-        int soldTickets = findAllByEpreuve(billet.getEpreuve()).stream().mapToInt(Billet::getQuantite).sum();
+        int soldTickets = findAllByEpreuve(billet.getEpreuve()).stream()
+                .filter(b -> b.getEtat() == Etat.VALIDE)
+                .mapToInt(Billet::getQuantite)
+                .sum();
         return totalTickets - soldTickets;
     }
 

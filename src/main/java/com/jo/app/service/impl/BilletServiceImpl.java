@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.jo.app.entity.Epreuve;
 import com.jo.app.repository.EpreuveRepository;
+import com.jo.app.repository.SpectateurRepository;
 import org.springframework.stereotype.Service;
 
 import com.jo.app.dto.BilletDto;
@@ -30,8 +30,12 @@ public class BilletServiceImpl implements BilletService{
 	private BilletRepository billetRepository;
 	private EpreuveRepository epreuveRepository;
 
-    public BilletServiceImpl(BilletRepository billetRepository) {
+	private SpectateurRepository spectateurRepository;
+
+    public BilletServiceImpl(BilletRepository billetRepository ,EpreuveRepository epreuveRepository ,SpectateurRepository spectateurRepository) {
         this.billetRepository = billetRepository;
+		this.epreuveRepository =epreuveRepository;
+		this.spectateurRepository = spectateurRepository;
     }
 
 	@Override
@@ -102,7 +106,7 @@ public class BilletServiceImpl implements BilletService{
 		}
 	}
 
-	@Override
+	/*@Override
 	public BilletDto achat(BilletDto billetDto) {
 		
 	    Billet billet =  BilletMapper.mapToBillet(createBillet(billetDto));
@@ -131,7 +135,7 @@ public class BilletServiceImpl implements BilletService{
 			return BilletMapper.mapToBilletDto(billetRepository.save(billet));
 		}
 
-	}
+	}*/
 
 	@Override
 	public void controle(BilletDto billetDto) {
@@ -226,6 +230,73 @@ public class BilletServiceImpl implements BilletService{
 
 		return billetDtos;
 	}
+
+	@Override
+	public List<BilletDto> venteStatistiquesParEpreuve(Long epreuveId) {
+		List<Billet> billets = billetRepository.findAll();
+		List<BilletDto> billetDtos = new ArrayList<>();
+
+		for (Billet billet : billets) {
+			BilletDto billetDto = BilletMapper.mapToBilletDto(billet);
+			if (billetDto.getEtat() == Etat.VALIDE && billetDto.getIdEpreuve().equals(epreuveId)) {
+				billetDtos.add(billetDto);
+			}
+		}
+
+		return billetDtos;
+	}
+
+	@Override
+	public BilletDto reserverBillet(Long idSpectateur, Long idEpreuve, int quantite) {
+		Billet billet = new Billet();
+		billet.setSpectateur(spectateurRepository.findById(idSpectateur).orElseThrow(() -> new IllegalStateException("Spectateur non trouvé")));
+		billet.setEpreuve(epreuveRepository.findById(idEpreuve).orElseThrow(() -> new IllegalStateException("Epreuve non trouvée")));
+		billet.setQuantite(quantite);
+
+		final int MAX_TICKETS_PER_SPECTATOR = 4;
+
+		if (quantite <= 0 || quantite > MAX_TICKETS_PER_SPECTATOR) {
+			throw new IllegalStateException("Le nombre de billets qu'un spectateur peut acheter doit être compris entre 1 et 4 compris");
+		}
+
+		int remainingTickets = getRemainingTicketsForEpreuve(billet);
+		int purchasedTicketsBySpectator = getTicketsPurchasedBySpectatorForEpreuve(billet);
+
+		int availableTickets = Math.max(0, MAX_TICKETS_PER_SPECTATOR - purchasedTicketsBySpectator);
+
+		if (remainingTickets <= 0) {
+			throw new IllegalStateException("Impossible de créer le billet. Il n'y a plus de billets disponibles pour cet épreuve.");
+		} else if (billet.getQuantite() > availableTickets) {
+			throw new IllegalStateException("Impossible de créer le billet. Le nombre de billets demandés (" + billet.getQuantite() + ") "
+					+ "dépasse la limite autorisée par spectateur (" + MAX_TICKETS_PER_SPECTATOR + ").");
+		} else {
+			billet.setEtat(Etat.EN_ATTENTE);
+			billet.setPrixTotal(billet.getEpreuve().getPrixUnitaireBillet() * billet.getQuantite());
+			billet.setMontantRemboursement(-1);
+			billet.setMessageConfirmation("Pas encore d'annulation");
+
+			return BilletMapper.mapToBilletDto(billetRepository.save(billet));
+		}
+	}
+	@Override
+	public BilletDto confirmerPaiement(Long billetId) {
+		Billet billet = billetRepository.findById(billetId).orElseThrow(() -> new IllegalStateException("Billet non trouvé"));
+
+		if (billet.getEtat() != Etat.EN_ATTENTE) {
+			throw new IllegalStateException("Le billet n'est pas en attente de paiement ou a déjà été confirmé.");
+		}
+
+
+		boolean paiementReussi = true;
+
+		if (!paiementReussi) {
+			throw new IllegalStateException("Le paiement a échoué.");
+		}
+
+		billet.setEtat(Etat.VALIDE);
+		return BilletMapper.mapToBilletDto(billetRepository.save(billet));
+	}
+
 
 	@Override
 	public List<BilletDto> findAllByEpreuveAndSpectateur(EpreuveDto epreuveDto, SpectateurDto spectateurDto) {

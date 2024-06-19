@@ -1,6 +1,7 @@
 package com.jo.app.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jo.app.dto.BilletDto;
 import com.jo.app.dto.EpreuveDto;
@@ -15,18 +16,14 @@ public interface BilletService {
      * @return Une liste contenant tous les billets.
      */
     List<BilletDto> findAllBillets();
-    
+
     List<BilletDto> findAllByEpreuveAndSpectateur(EpreuveDto epreuveDto, SpectateurDto spectateurDto);
     
     List<BilletDto> findAllByEpreuve(EpreuveDto epreuveDto);
     
     List<BilletDto> findAllBySpectateur(SpectateurDto spectateurDto);
 
-    /**
-     * Crée un nouveau billet.
-     *
-     * @param billetDto Les informations du billet à créer.
-     */
+
     BilletDto createBillet(BilletDto billetDto);
 
     /**
@@ -44,12 +41,6 @@ public interface BilletService {
      */
     void updateBillet(BilletDto billetDto);
 
-    /**
-     * Achat du billet.
-     *
-     * @param billetDto Les nouvelles informations du billet.
-     */
-    BilletDto achat(BilletDto billetDto);
 
     /**
      * Met à jour un billet existant lors du controlle.
@@ -105,4 +96,15 @@ public interface BilletService {
      */
 
     List<BilletDto> venteStatistiques();
+
+    public List<BilletDto> venteStatistiquesParEpreuve(Long epreuveId);
+
+    /**
+     * Reservation d'un billet en faisant directement  un nouveau billet.
+     *Les informations du billet à créer.
+     */
+
+    BilletDto reserverBillet(Long idSpectateur, Long idEpreuve, int quantite);
+
+    BilletDto confirmerPaiement(Long billetId);
 }
