@@ -71,10 +71,10 @@ public class BilletController {
         }
     }
 
-    @PostMapping("/confirmer-paiement")
-    public ResponseEntity<BilletDto> confirmerPaiement(@RequestParam Long billetId) {
-        BilletDto billetDto = billetService.confirmerPaiement(billetId);
-        return ResponseEntity.ok(billetDto);
+    @PostMapping("/confirmer-paiement/{id}")
+    public BilletDto confirmerPaiement(@RequestBody BilletDto billetDto) {
+        billetService.confirmerPaiement(billetDto.getId());
+        return billetDto;
     }
 
 

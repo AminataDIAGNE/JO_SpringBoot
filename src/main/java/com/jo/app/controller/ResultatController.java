@@ -1,5 +1,6 @@
 package com.jo.app.controller;
 
+import com.jo.app.dto.DelegationDto;
 import com.jo.app.dto.ResultatDto;
 import com.jo.app.service.DelegationService;
 import com.jo.app.service.ResultatService;
@@ -52,5 +53,9 @@ public class ResultatController {
         resultatService.deleteResultat(id);
     }
 
-
+    @GetMapping("/classement-general")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DelegationDto> getClassementGeneral() {
+        return resultatService.calculerClassementGeneral();
+    }
 }

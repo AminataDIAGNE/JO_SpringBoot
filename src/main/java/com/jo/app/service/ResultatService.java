@@ -2,6 +2,7 @@ package com.jo.app.service;
 
 import java.util.List;
 
+import com.jo.app.dto.DelegationDto;
 import com.jo.app.dto.ResultatDto;
 
 public interface ResultatService {
@@ -18,4 +19,5 @@ public interface ResultatService {
 
     void deleteResultat(Long resultatId);
 
+    List<DelegationDto> calculerClassementGeneral();
 }

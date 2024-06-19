@@ -264,8 +264,8 @@ public class BilletServiceImpl implements BilletService{
 
 		int availableTickets = Math.max(0, MAX_TICKETS_PER_SPECTATOR - purchasedTicketsBySpectator);
 
-		if (remainingTickets <= 0) {
-			throw new IllegalStateException("Impossible de créer le billet. Il n'y a plus de billets disponibles pour cet épreuve.");
+		if (remainingTickets - quantite <= 0) {
+			throw new IllegalStateException("Impossible de créer le billet. Il n'y a plus assez de billets disponibles pour cet épreuve.");
 		} else if (billet.getQuantite() > availableTickets) {
 			throw new IllegalStateException("Impossible de créer le billet. Le nombre de billets demandés (" + billet.getQuantite() + ") "
 					+ "dépasse la limite autorisée par spectateur (" + MAX_TICKETS_PER_SPECTATOR + ").");
@@ -284,13 +284,6 @@ public class BilletServiceImpl implements BilletService{
 
 		if (billet.getEtat() != Etat.EN_ATTENTE) {
 			throw new IllegalStateException("Le billet n'est pas en attente de paiement ou a déjà été confirmé.");
-		}
-
-
-		boolean paiementReussi = true;
-
-		if (!paiementReussi) {
-			throw new IllegalStateException("Le paiement a échoué.");
 		}
 
 		billet.setEtat(Etat.VALIDE);
