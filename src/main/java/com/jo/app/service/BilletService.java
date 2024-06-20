@@ -100,9 +100,9 @@ public interface BilletService {
      * @throws RuntimeException Si le billet avec l'identifiant spécifié n'est pas trouvé.
      */
 
-    List<BilletDto> venteStatistiques();
+int venteStatistiques();
 
-    public List<BilletDto> venteStatistiquesParEpreuve(Long epreuveId);
+    public int venteStatistiquesParEpreuve(Long epreuveId);
 
     /**
      * Reservation d'un billet en faisant directement  un nouveau billet.

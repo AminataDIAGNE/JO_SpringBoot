@@ -9,6 +9,10 @@ import com.jo.app.dto.DelegationDto;
 import com.jo.app.dto.EpreuveDto;
 import com.jo.app.dto.ParticipantDto;
 import com.jo.app.entity.Delegation;
+import com.jo.app.entity.Epreuve;
+import com.jo.app.entity.Participant;
+import com.jo.app.mapper.EpreuveMapper;
+import com.jo.app.mapper.ParticipantMapper;
 import com.jo.app.repository.DelegationRepository;
 import com.jo.app.service.EpreuveService;
 import com.jo.app.service.ParticipantService;
@@ -161,4 +165,35 @@ public class ResultatServiceImpl implements ResultatService {
 
 		return classementGeneral;
 	}
+
+	@Override
+	public void publier(List<ResultatDto> resultats) {
+		for (ResultatDto resultatDto : resultats) {
+				// Find the participant by the participant ID or another identifier
+				ParticipantDto participant = participantService.findParticipantById(resultatDto.getParticipant().getId());
+				if (participant == null) {
+					throw new RuntimeException("Participant not found with ID: " + resultatDto.getParticipant().getId());
+				}
+
+				// Find the epreuve by the epreuve ID or another identifier
+				EpreuveDto epreuve = epreuveService.findEpreuveById(resultatDto.getEpreuve().getId());
+				if (epreuve == null) {
+					throw new RuntimeException("Epreuve not found with ID: " + resultatDto.getEpreuve().getId());
+				}
+
+				// Create or update the Resultat entity
+				Resultat resultat = new Resultat();
+				resultat.setParticipant(ParticipantMapper.mapToParticipant(participant));
+				resultat.setEpreuve(EpreuveMapper.mapToEpreuve(epreuve));
+				resultat.setPosition(resultatDto.getPosition());
+				resultat.setTempsPoints(resultatDto.getTempsPoints());
+				resultat.setForfait(resultatDto.isForfait());
+				// Set other fields as necessary
+
+				// Save the updated Resultat entity to the repository
+				resultatRepository.save(resultat);
+		}
+	}
+
+
 }

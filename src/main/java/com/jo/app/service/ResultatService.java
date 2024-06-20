@@ -20,4 +20,6 @@ public interface ResultatService {
     void deleteResultat(Long resultatId);
 
     List<DelegationDto> calculerClassementGeneral();
+
+    void publier(List<ResultatDto> resultats);
 }

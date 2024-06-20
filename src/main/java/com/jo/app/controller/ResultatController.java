@@ -23,39 +23,46 @@ public class ResultatController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ResultatDto> getAllResultats(){
+    public List<ResultatDto> getAllResultats() {
         return resultatService.findAllResultats();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultatDto getResultatById(@PathVariable Long id){
+    public ResultatDto getResultatById(@PathVariable Long id) {
         return resultatService.findResultatById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createResultat(@RequestBody @Valid ResultatDto resultatDto){
+    public void createResultat(@RequestBody @Valid ResultatDto resultatDto) {
         resultatService.createResultat(resultatDto);
     }
 
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateResultat(@PathVariable Long id, @RequestBody ResultatDto resultatDto){
+    public void updateResultat(@PathVariable Long id, @RequestBody ResultatDto resultatDto) {
         resultatDto.setId(id);
         resultatService.updateResultat(resultatDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteResultat(@PathVariable Long id){
+    public void deleteResultat(@PathVariable Long id) {
         resultatService.deleteResultat(id);
     }
 
-    @GetMapping("/classement-general")
+    @GetMapping("/classementGeneral")
     @ResponseStatus(HttpStatus.OK)
     public List<DelegationDto> getClassementGeneral() {
         return resultatService.calculerClassementGeneral();
     }
+
+    @GetMapping("/publier")
+    @ResponseStatus(HttpStatus.OK)
+    public void publier(@RequestBody List<ResultatDto> resultat) {
+        resultatService.publier(resultat);
+    }
+
 }

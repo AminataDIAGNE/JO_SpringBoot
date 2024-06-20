@@ -104,13 +104,13 @@ public class BilletController {
 
     @GetMapping("/Stat")
     @ResponseStatus(HttpStatus.OK)
-    public List<BilletDto> statistique() {
+    public int statistique() {
             return billetService.venteStatistiques();
     }
 
     @GetMapping("/Stat/{idEpreuve}")
     @ResponseStatus(HttpStatus.OK)
-    public List<BilletDto> statistiqueParEpreuve(@PathVariable("id") Long epreuveId) {
+    public int statistiqueParEpreuve(@PathVariable("id") Long epreuveId) {
         return billetService.venteStatistiquesParEpreuve(epreuveId);
     }
 

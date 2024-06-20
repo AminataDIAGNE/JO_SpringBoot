@@ -217,33 +217,38 @@ public class BilletServiceImpl implements BilletService{
 
 	//Todo à tester
 	@Override
-	public List<BilletDto> venteStatistiques() {
+	public int venteStatistiques() {
 		List<Billet> billets = billetRepository.findAll();
 		List<BilletDto> billetDtos = new ArrayList<>();
-
+ int c = 0;
 		for (Billet billet : billets) {
 			BilletDto billetDto = BilletMapper.mapToBilletDto(billet);
 			if (billetDto.getEtat() == Etat.VALIDE) {
 				billetDtos.add(billetDto);
+				c++;
 			}
 		}
 
-		return billetDtos;
+		return c;
 	}
 
 	@Override
-	public List<BilletDto> venteStatistiquesParEpreuve(Long epreuveId) {
-		List<Billet> billets = billetRepository.findAll();
+	public int venteStatistiquesParEpreuve(Long epreuveId) {
+		List<Billet> billets = billetRepository.findAllBySpectateur(spectateurRepository.findById(epreuveId).get());
 		List<BilletDto> billetDtos = new ArrayList<>();
-
+		int c=0;
+		if (billets == null) {
+			throw new RuntimeException("Billet introuvable");
+		}
 		for (Billet billet : billets) {
 			BilletDto billetDto = BilletMapper.mapToBilletDto(billet);
-			if (billetDto.getEtat() == Etat.VALIDE && billetDto.getIdEpreuve().equals(epreuveId)) {
+			if (billetDto.getEtat() == Etat.VALIDE ) {
 				billetDtos.add(billetDto);
+				c++;
 			}
 		}
 
-		return billetDtos;
+		return c;
 	}
 
 	@Override

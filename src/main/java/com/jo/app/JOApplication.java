@@ -72,7 +72,7 @@ public class JOApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		LocalDate date = LocalDate.of(2024, 4, 30);
+		LocalDate date = LocalDate.of(2024, 8, 30);
 		LocalTime time = LocalTime.of(12, 30);
 		LocalDateTime dateTimeFromParts = LocalDateTime.of(date, time);
 		
@@ -118,6 +118,14 @@ public class JOApplication implements CommandLineRunner{
         epreuve1.setPrixUnitaireBillet(10.);
         epreuve1.setInfrastructureSportive(infras1);
         epreuveRepository.saveAll(Arrays.asList(epreuve1));
+
+        Epreuve epreuve2 = new Epreuve();
+        epreuve2.setDate(dateTimeFromParts);
+        epreuve2.setNom("Foot");
+        epreuve2.setNombrePlacesMisesEnVente(10);
+        epreuve2.setPrixUnitaireBillet(10.);
+        epreuve2.setInfrastructureSportive(infras1);
+        epreuveRepository.saveAll(Arrays.asList(epreuve2));
         
         // Insérer des Resultats
         Resultat resultat1 = new Resultat();
